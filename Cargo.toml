@@ -1,0 +1,13 @@
+[package]
+name = "jw-parser"
+version = "0.1.0"
+authors = ["Hexilee <hexileee@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+regex = "1"
+unhtml = "0.6"
+unhtml_derive = "0.5"
+failure = "0.1"
+failure_derive = "0.1"
+lazy_static = "1.2"
