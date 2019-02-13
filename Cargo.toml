@@ -1,8 +1,15 @@
 [package]
-name = "jw-parser"
+name = "zju-jw-parser"
 version = "0.1.0"
 authors = ["Hexilee <hexileee@gmail.com>"]
 edition = "2018"
+license = "MIT"
+description = "浙江大学教务网网页解析库"
+repository = "https://github.com/QSCTech/jw-parser"
+keywords = ["zju", "jw", "html", "parsing"]
+categories = ["parsing"]
+readme = "README.md"
+documentation = "https://docs.rs/zju-jw-parser"
 
 [dependencies]
 regex = "1"
@@ -11,3 +18,6 @@ unhtml_derive = "0.5"
 failure = "0.1"
 failure_derive = "0.1"
 lazy_static = "1.2"
+
+[badges]
+travis-ci = { repository = "QSCTech/jw-parser", branch = "master" }
