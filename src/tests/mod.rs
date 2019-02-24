@@ -1,8 +1,8 @@
 mod pages;
 
-use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE};
+use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, OBJECT_MOVED_PAGE};
 use super::ExamTime;
-use super::{CoursesPage, ExamsPage, LoginPage};
+use super::{CoursesPage, ExamsPage, LoginPage, ObjectMovedPage};
 use std::str::FromStr;
 use unhtml::FromHtml;
 
@@ -78,4 +78,10 @@ fn exam_time_regex() {
     assert_eq!(0, time.start_min);
     assert_eq!(10, time.end_hour);
     assert_eq!(0, time.end_min);
+}
+
+#[test]
+fn object_moved_page() {
+    let page = ObjectMovedPage::from_html(OBJECT_MOVED_PAGE).unwrap();
+    assert_eq!("/dcwj.aspx?xh=3160100000", &page.to)
 }

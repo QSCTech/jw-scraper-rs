@@ -189,6 +189,12 @@ pub struct ExamsPage {
     pub exams: Vec<Exam>,
 }
 
+#[derive(FromHtml)]
+pub struct ObjectMovedPage {
+    #[html(selector = "a", attr = "href")]
+    pub to: String,
+}
+
 mod err;
 #[cfg(test)]
 mod tests;
