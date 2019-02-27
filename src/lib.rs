@@ -156,7 +156,10 @@ pub struct ObjectMovedPage {
 }
 
 #[derive(FromHtml)]
-pub struct MajorScoresPage {}
+pub struct MajorScoresPage {
+    #[html(selector = "#Label1", attr = "inner")]
+    pub summary_table: MajorSummaryTable,
+}
 
 #[derive(FromHtml)]
 pub struct MajorScore {}
