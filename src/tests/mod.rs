@@ -1,6 +1,6 @@
 mod pages;
 
-use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, OBJECT_MOVED_PAGE};
+use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, OBJECT_MOVED_PAGE, MAJOR_SCORES_PAGE};
 use super::ExamTime;
 use super::{CoursesPage, ExamsPage, LoginPage, ObjectMovedPage};
 use std::str::FromStr;
