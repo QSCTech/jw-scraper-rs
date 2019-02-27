@@ -157,12 +157,36 @@ pub struct ObjectMovedPage {
 
 #[derive(FromHtml)]
 pub struct MajorScoresPage {
+    #[html(selector = "#DataGrid1 > tbody > tr:nth-child(1n + 2)")]
+    pub scores: Vec<MajorScore>,
+
     #[html(selector = "#Label1", attr = "inner")]
     pub summary_table: MajorSummaryTable,
 }
 
 #[derive(FromHtml)]
-pub struct MajorScore {}
+pub struct MajorScore {
+    #[html(selector = "td:nth-child(1)", attr = "inner")]
+    pub identifier: String,
+
+    #[html(selector = "td:nth-child(2)", attr = "inner")]
+    pub course_name: String,
+
+    #[html(selector = "td:nth-child(3)", attr = "inner")]
+    pub score: String,
+
+    #[html(selector = "td:nth-child(4)", attr = "inner")]
+    pub final_score: f32,
+
+    #[html(selector = "td:nth-child(5)", attr = "inner")]
+    pub credit: f32,
+
+    #[html(selector = "td:nth-child(6)", attr = "inner")]
+    pub grade_point: f32,
+
+    #[html(selector = "td:nth-child(7)", attr = "inner")]
+    pub school_year: String,
+}
 
 pub struct MajorSummaryTable {
     pub gpa: KVPattern,
