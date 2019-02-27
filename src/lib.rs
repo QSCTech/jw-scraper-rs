@@ -161,7 +161,23 @@ pub struct MajorScoresPage {}
 #[derive(FromHtml)]
 pub struct MajorScore {}
 
-pub struct MajorSummaryTable {}
+pub struct MajorSummaryTable {
+    pub gpa: KVPattern,
+    pub total_credit: KVPattern,
+}
+
+impl FromStr for MajorSummaryTable {
+    type Err = DeserializeError;
+    fn from_str(data: &str) -> Result<Self, Self::Err> {
+        let patterns = data
+            .split("&nbsp;&nbsp;&nbsp;&nbsp;")
+            .collect::<Vec<&str>>();
+        Ok(Self {
+            gpa: KVPattern::parse(patterns[0])?,
+            total_credit: KVPattern::parse(patterns[1])?,
+        })
+    }
+}
 
 /// match string like: 主修专业课程累计获得总学分=58.00
 #[derive(Reformation)]

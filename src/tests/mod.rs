@@ -2,7 +2,7 @@ mod pages;
 
 use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE};
 use super::ExamTime;
-use super::{CoursesPage, ExamsPage, KVPattern, LoginPage, ObjectMovedPage};
+use super::{CoursesPage, ExamsPage, KVPattern, LoginPage, MajorSummaryTable, ObjectMovedPage};
 use reformation::Reformation;
 use unhtml::FromHtml;
 
@@ -91,4 +91,13 @@ fn kv_pattern() {
     let pattern = KVPattern::parse("主修专业课程累计获得总学分=58.00").unwrap();
     assert_eq!("主修专业课程累计获得总学分", pattern.key);
     assert_eq!(58.00f32, pattern.value);
+}
+
+#[test]
+fn major_summary_table_from_html() {
+    let MajorSummaryTable { gpa, total_credit } = MajorSummaryTable::from_html("主修专业课程累计平均绩点=2.25&nbsp;&nbsp;&nbsp;&nbsp;主修专业课程累计获得总学分=58.00").unwrap();
+    assert_eq!("主修专业课程累计平均绩点", gpa.key);
+    assert_eq!(2.25f32, gpa.value);
+    assert_eq!("主修专业课程累计获得总学分", total_credit.key);
+    assert_eq!(58.00f32, total_credit.value);
 }
