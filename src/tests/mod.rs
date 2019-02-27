@@ -3,7 +3,7 @@ mod pages;
 use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE};
 use super::ExamTime;
 use super::{
-    CoursesPage, ExamsPage, KVPattern, LoginPage, MajorScoresPage, MajorSummaryTable,
+    CoursesPage, ExamsPage, KVPattern, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
     ObjectMovedPage,
 };
 use reformation::Reformation;
@@ -97,7 +97,7 @@ fn kv_pattern() {
 }
 
 #[test]
-fn major_summary_table_from_html() {
+fn major_summary_table() {
     let MajorSummaryTable { gpa, total_credit } = MajorSummaryTable::from_html("主修专业课程累计平均绩点=2.25&nbsp;&nbsp;&nbsp;&nbsp;主修专业课程累计获得总学分=58.00").unwrap();
     assert_eq!("主修专业课程累计平均绩点", gpa.key);
     assert_eq!(2.25f32, gpa.value);
@@ -106,11 +106,28 @@ fn major_summary_table_from_html() {
 }
 
 #[test]
+fn major_score() {
+    let score = MajorScore::from_html("
+    <table><tr><td>(2016-2017-2)-211G0210-0098253-1</td><td>C程序设计</td><td>85</td><td>85</td><td>3.0</td><td>3.90</td><td>2016-2017</td></tr></table>").unwrap();
+    assert_eq!("(2016-2017-2)-211G0210-0098253-1", &score.identifier);
+    assert_eq!("C程序设计", &score.course_name);
+    assert_eq!("85", &score.raw_score);
+    assert_eq!(85f32, score.final_score);
+    assert_eq!(3.0f32, score.credit);
+    assert_eq!(3.90f32, score.grade_point);
+    assert_eq!("2016-2017", &score.school_year);
+}
+
+#[test]
 fn major_scores_page() {
-    let MajorScoresPage { summary_table } = MajorScoresPage::from_html(MAJOR_SCORES_PAGE).unwrap();
+    let MajorScoresPage {
+        scores,
+        summary_table,
+    } = MajorScoresPage::from_html(MAJOR_SCORES_PAGE).unwrap();
     let MajorSummaryTable { gpa, total_credit } = summary_table;
     assert_eq!("主修专业课程累计平均绩点", gpa.key);
     assert_eq!(2.25f32, gpa.value);
     assert_eq!("主修专业课程累计获得总学分", total_credit.key);
     assert_eq!(58.00f32, total_credit.value);
+    assert_eq!(35, scores.len());
 }

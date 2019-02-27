@@ -173,7 +173,7 @@ pub struct MajorScore {
     pub course_name: String,
 
     #[html(selector = "td:nth-child(3)", attr = "inner")]
-    pub score: String,
+    pub raw_score: String,
 
     #[html(selector = "td:nth-child(4)", attr = "inner")]
     pub final_score: f32,
