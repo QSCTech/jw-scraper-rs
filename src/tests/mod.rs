@@ -1,11 +1,10 @@
 mod pages;
 
-use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, OBJECT_MOVED_PAGE, MAJOR_SCORES_PAGE};
+use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE};
 use super::ExamTime;
-use super::{CoursesPage, ExamsPage, LoginPage, ObjectMovedPage, KVPattern};
-use std::str::FromStr;
-use unhtml::FromHtml;
+use super::{CoursesPage, ExamsPage, KVPattern, LoginPage, ObjectMovedPage};
 use reformation::Reformation;
+use unhtml::FromHtml;
 
 #[test]
 fn login() {
@@ -71,7 +70,7 @@ fn exams() {
 
 #[test]
 fn exam_time_regex() {
-    let time = ExamTime::from_str("2019年01月13日(08:00-10:00)").unwrap();
+    let time = ExamTime::parse("2019年01月13日(08:00-10:00)").unwrap();
     assert_eq!(2019, time.year);
     assert_eq!(1, time.month);
     assert_eq!(13, time.day);

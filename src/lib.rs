@@ -8,11 +8,7 @@ extern crate failure_derive;
 #[macro_use]
 extern crate unhtml_derive;
 
-#[macro_use]
-extern crate lazy_static;
-
 use crate::err::DeserializeError;
-use regex::Regex;
 use std::str::FromStr;
 use unhtml::{self, VecFromHtml};
 
@@ -75,6 +71,8 @@ pub struct CoursesPage {
 }
 
 /// match string like: 2019年01月13日(08:00-10:00)
+#[derive(Reformation)]
+#[reformation(r"{year}年{month}月{day}日\({start_hour}:{start_min}-{end_hour}:{end_min}\)")]
 pub struct ExamTime {
     pub year: i32,
     pub month: u32,
@@ -83,48 +81,6 @@ pub struct ExamTime {
     pub start_min: u32,
     pub end_hour: u32,
     pub end_min: u32,
-}
-
-impl FromStr for ExamTime {
-    type Err = DeserializeError;
-    fn from_str(raw_time: &str) -> Result<Self, Self::Err> {
-        lazy_static! {
-            static ref EXAM_TIME_REGEX: Regex = Regex::new(
-                r"(?x)
-(?P<year>\d{4})  # the year
-年
-(?P<month>\d{2}) # the month
-月
-(?P<day>\d{2})   # the day
-日\(
-(?P<start_hour>\d{2})  # the start hour
-:
-(?P<start_min>\d{2})   # the start minute
--
-(?P<end_hour>\d{2})    # the end hour
-:
-(?P<end_min>\d{2})     # the end minute
-\)
-"
-            )
-            .unwrap();
-        }
-        let time = EXAM_TIME_REGEX
-            .captures(raw_time)
-            .ok_or(DeserializeError::RegexMismatch {
-                regex_ident: "EXAM_TIME_REGEX".to_owned(),
-                text: raw_time.to_owned(),
-            })?;
-        Ok(Self {
-            year: i32::from_str(&time["year"])?,
-            month: u32::from_str(&time["month"])?,
-            day: u32::from_str(&time["day"])?,
-            start_hour: u32::from_str(&time["start_hour"])?,
-            start_min: u32::from_str(&time["start_min"])?,
-            end_hour: u32::from_str(&time["end_hour"])?,
-            end_min: u32::from_str(&time["end_min"])?,
-        })
-    }
 }
 
 pub enum OptionalExamTime {
@@ -137,7 +93,7 @@ impl FromStr for OptionalExamTime {
     fn from_str(raw_time: &str) -> Result<Self, Self::Err> {
         match raw_time {
             "&nbsp;" => Ok(OptionalExamTime::None),
-            other => Ok(OptionalExamTime::Some(ExamTime::from_str(other)?)),
+            other => Ok(OptionalExamTime::Some(ExamTime::parse(other)?)),
         }
     }
 }
@@ -200,24 +156,19 @@ pub struct ObjectMovedPage {
 }
 
 #[derive(FromHtml)]
-pub struct MajorScoresPage {
-
-}
+pub struct MajorScoresPage {}
 
 #[derive(FromHtml)]
-pub struct MajorScore {
+pub struct MajorScore {}
 
-}
+pub struct MajorSummaryTable {}
 
-pub struct MajorSummaryTable {
-
-}
-
+/// match string like: 主修专业课程累计获得总学分=58.00
 #[derive(Reformation)]
 #[reformation(r"{key}={value}")]
 pub struct KVPattern {
     pub key: String,
-    pub value: f32
+    pub value: f32,
 }
 
 mod err;
