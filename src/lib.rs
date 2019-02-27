@@ -1,3 +1,7 @@
+#![feature(custom_attribute)]
+
+use reformation::Reformation;
+
 #[macro_use]
 extern crate failure_derive;
 
@@ -193,6 +197,27 @@ pub struct ExamsPage {
 pub struct ObjectMovedPage {
     #[html(selector = "a", attr = "href")]
     pub to: String,
+}
+
+#[derive(FromHtml)]
+pub struct MajorScoresPage {
+
+}
+
+#[derive(FromHtml)]
+pub struct MajorScore {
+
+}
+
+pub struct MajorSummaryTable {
+
+}
+
+#[derive(Reformation)]
+#[reformation(r"{key}={value}")]
+pub struct KVPattern {
+    pub key: String,
+    pub value: f32
 }
 
 mod err;

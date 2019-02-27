@@ -18,6 +18,7 @@ unhtml_derive = "0.5"
 failure = "0.1"
 failure_derive = "0.1"
 lazy_static = "1.2"
+reformation = "0.4.1"
 
 [badges]
 travis-ci = { repository = "QSCTech/jw-parser", branch = "master" }

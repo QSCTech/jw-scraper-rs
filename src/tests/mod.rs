@@ -2,9 +2,10 @@ mod pages;
 
 use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, OBJECT_MOVED_PAGE, MAJOR_SCORES_PAGE};
 use super::ExamTime;
-use super::{CoursesPage, ExamsPage, LoginPage, ObjectMovedPage};
+use super::{CoursesPage, ExamsPage, LoginPage, ObjectMovedPage, KVPattern};
 use std::str::FromStr;
 use unhtml::FromHtml;
+use reformation::Reformation;
 
 #[test]
 fn login() {
@@ -84,4 +85,11 @@ fn exam_time_regex() {
 fn object_moved_page() {
     let page = ObjectMovedPage::from_html(OBJECT_MOVED_PAGE).unwrap();
     assert_eq!("/dcwj.aspx?xh=3160100000", &page.to)
+}
+
+#[test]
+fn kv_pattern() {
+    let pattern = KVPattern::parse("主修专业课程累计获得总学分=58.00").unwrap();
+    assert_eq!("主修专业课程累计获得总学分", pattern.key);
+    assert_eq!(58.00f32, pattern.value);
 }
