@@ -737,13 +737,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "zju-jw-parser"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "failure 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure_derive 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "lazy_static 1.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "reformation 0.4.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "regex 1.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "unhtml 0.6.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "unhtml_derive 0.5.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
