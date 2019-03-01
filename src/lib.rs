@@ -14,13 +14,24 @@ use unhtml::{self, VecFromHtml};
 
 #[derive(FromHtml)]
 pub struct HiddenForm {
-    #[html(selector = "input[type=\"hidden\"]:nth-child(1)", attr = "value")]
+    #[html(
+        selector = "input[type=\"hidden\"][name=\"__EVENTTARGET\"]",
+        attr = "value",
+        default = ""
+    )]
     pub event_target: String,
 
-    #[html(selector = "input[type=\"hidden\"]:nth-child(2)", attr = "value")]
+    #[html(
+        selector = "input[type=\"hidden\"][name=\"__EVENTARGUMENT\"]",
+        attr = "value",
+        default = ""
+    )]
     pub event_argument: String,
 
-    #[html(selector = "input[type=\"hidden\"]:nth-child(3)", attr = "value")]
+    #[html(
+        selector = "input[type=\"hidden\"][name=\"__VIEWSTATE\"]",
+        attr = "value"
+    )]
     pub view_state: String,
 }
 
