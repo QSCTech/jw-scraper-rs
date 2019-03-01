@@ -228,9 +228,15 @@ pub struct Score {
 }
 
 #[derive(FromHtml)]
-pub struct Scores {
+pub struct ScoresPage {
     #[html(selector = "#DataGrid1 > tbody > tr:nth-child(1n + 2)")]
     pub scores: Vec<Score>,
+}
+
+#[derive(FromHtml)]
+pub struct ScoresBasePage {
+    #[html(selector = "#Form1")]
+    pub hidden_form: HiddenForm,
 }
 
 /// match string like: 主修专业课程累计获得总学分=58.00
