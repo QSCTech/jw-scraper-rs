@@ -1,10 +1,12 @@
 mod pages;
 
-use self::pages::{COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE};
+use self::pages::{
+    COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE, SCORES_PAGE,
+};
 use super::ExamTime;
 use super::{
     CoursesPage, ExamsPage, KVPattern, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
-    ObjectMovedPage,
+    ObjectMovedPage, Scores,
 };
 use reformation::Reformation;
 use unhtml::FromHtml;
@@ -130,4 +132,17 @@ fn major_scores_page() {
     assert_eq!("主修专业课程累计获得总学分", total_credit.key);
     assert_eq!(58.00f32, total_credit.value);
     assert_eq!(35, scores.len());
+}
+
+#[test]
+fn scores() {
+    let Scores { scores } = Scores::from_html(SCORES_PAGE).unwrap();
+    assert_eq!(23, scores.len());
+    let score = &scores[0];
+    assert_eq!("(2016-2017-1)-021E0010-0092466-5", &score.identifier);
+    assert_eq!("思想道德修养与法律基础", &score.course_name);
+    assert_eq!("83", &score.raw_score);
+    assert_eq!(2.5f32, score.credit);
+    assert_eq!(3.90f32, score.grade_point);
+    assert_eq!("&nbsp;", &score.makeup_score);
 }

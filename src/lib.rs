@@ -206,6 +206,33 @@ impl FromStr for MajorSummaryTable {
     }
 }
 
+#[derive(FromHtml)]
+pub struct Score {
+    #[html(selector = "td:nth-child(1)", attr = "inner")]
+    pub identifier: String,
+
+    #[html(selector = "td:nth-child(2)", attr = "inner")]
+    pub course_name: String,
+
+    #[html(selector = "td:nth-child(3)", attr = "inner")]
+    pub raw_score: String,
+
+    #[html(selector = "td:nth-child(4)", attr = "inner")]
+    pub credit: f32,
+
+    #[html(selector = "td:nth-child(5)", attr = "inner")]
+    pub grade_point: f32,
+
+    #[html(selector = "td:nth-child(6)", attr = "inner")]
+    pub makeup_score: String,
+}
+
+#[derive(FromHtml)]
+pub struct Scores {
+    #[html(selector = "#DataGrid1 > tbody > tr:nth-child(1n + 2)")]
+    pub scores: Vec<Score>,
+}
+
 /// match string like: 主修专业课程累计获得总学分=58.00
 #[derive(Reformation)]
 #[reformation(r"{key}={value}")]
