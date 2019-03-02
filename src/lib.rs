@@ -265,6 +265,12 @@ pub struct KVPattern {
     pub value: f32,
 }
 
+#[derive(FromHtml)]
+pub struct TotalCreditPage {
+    #[html(selector = "#lb_yhxf", attr = "inner")]
+    pub credit: f32,
+}
+
 mod err;
 #[cfg(test)]
 mod tests;

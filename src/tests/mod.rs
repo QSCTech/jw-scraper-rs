@@ -2,12 +2,12 @@ mod pages;
 
 use self::pages::{
     COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE, SCORES_BASE_PAGE,
-    SCORES_PAGE,
+    SCORES_PAGE, TOTAL_CREDIT_PAGE,
 };
 use super::ExamTime;
 use super::{
     CoursesPage, ExamsPage, KVPattern, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
-    ObjectMovedPage, ScoresBasePage, ScoresPage,
+    ObjectMovedPage, ScoresBasePage, ScoresPage, TotalCreditPage,
 };
 use reformation::Reformation;
 use unhtml::FromHtml;
@@ -160,4 +160,10 @@ fn scores_base_page() {
     );
     assert_eq!("", school_year.selected);
     assert_eq!(20, school_year.all_options.len());
+}
+
+#[test]
+fn total_credit_page() {
+    let TotalCreditPage { credit } = TotalCreditPage::from_html(TOTAL_CREDIT_PAGE).unwrap();
+    assert_eq!(83f32, credit);
 }
