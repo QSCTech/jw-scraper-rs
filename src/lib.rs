@@ -252,6 +252,9 @@ pub struct ScoresPage {
 pub struct ScoresBasePage {
     #[html(selector = "#Form1")]
     pub hidden_form: HiddenForm,
+
+    #[html(selector = "#ddlXN")]
+    pub school_year: SelectMenu,
 }
 
 /// match string like: 主修专业课程累计获得总学分=58.00
