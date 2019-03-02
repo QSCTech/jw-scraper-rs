@@ -43,7 +43,11 @@ pub struct LoginPage {
 
 #[derive(FromHtml)]
 pub struct SelectMenu {
-    #[html(selector = "option[selected=\"selected\"]", attr = "value")]
+    #[html(
+        selector = "option[selected=\"selected\"]",
+        attr = "value",
+        default = ""
+    )]
     pub selected: String,
 
     #[html(selector = "option", attr = "value")]
