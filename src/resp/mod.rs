@@ -1,4 +1,5 @@
 pub mod err;
+use interfacer_http::derive::FromContent;
 use reformation::Reformation;
 use std::str::FromStr;
 use unhtml::{self, VecFromHtml};
@@ -27,7 +28,7 @@ pub struct HiddenForm {
     pub view_state: String,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct LoginPage {
     #[html(selector = "#Form1")]
     pub hidden_form: HiddenForm,
@@ -62,7 +63,7 @@ pub struct Course {
     pub places: String,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct CoursesPage {
     #[html(selector = "#xskb_form")]
     pub hidden_form: HiddenForm,
