@@ -19,7 +19,7 @@ pub struct LoginBody<'a> {
     password: &'a str,
 
     #[serde(rename = "RadioButtonList1")]
-    radio_button: &'a str,
+    radio_button: &'a [u8],
 
     #[serde(rename = "Text1")]
     text1: &'a str,
@@ -33,7 +33,7 @@ impl<'a> LoginBody<'a> {
             view_state,
             username,
             password,
-            radio_button: "学生",
+            radio_button: &[0xd1, 0xa7, 0xc9, 0xfa][..], // encoding in gbk: "学生"
             text1: "",
         }
     }
