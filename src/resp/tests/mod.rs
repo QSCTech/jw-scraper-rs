@@ -101,7 +101,10 @@ fn kv_pattern() {
 
 #[test]
 fn major_summary_table() {
-    let MajorSummaryTable { gpa, total_credit } = MajorSummaryTable::from_html("主修专业课程累计平均绩点=2.25&nbsp;&nbsp;&nbsp;&nbsp;主修专业课程累计获得总学分=58.00").unwrap();
+    let MajorSummaryTable { gpa, total_credit } = MajorSummaryTable::from_html(
+        "主修专业课程累计平均绩点=2.25&nbsp;&nbsp;&nbsp;&nbsp;主修专业课程累计获得总学分=58.00",
+    )
+    .unwrap();
     assert_eq!("主修专业课程累计平均绩点", gpa.key);
     assert_eq!(2.25f32, gpa.value);
     assert_eq!("主修专业课程累计获得总学分", total_credit.key);

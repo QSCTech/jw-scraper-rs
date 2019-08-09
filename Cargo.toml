@@ -1,15 +1,15 @@
 [package]
-name = "zju-jw-parser"
-version = "0.1.5"
+name = "zju-jw-scraper"
+version = "0.1.0"
 authors = ["Hexilee <hexileee@gmail.com>"]
 edition = "2018"
 license = "MIT"
-description = "浙江大学教务网网页解析库"
-repository = "https://github.com/QSCTech/jw-parser"
-keywords = ["zju", "jw", "html", "parsing"]
-categories = ["parsing"]
+description = "浙江大学教务网爬虫库"
+repository = "https://github.com/QSCTech/jw-scraper"
+keywords = ["zju", "jw", "scraper"]
+categories = ["api-bindings"]
 readme = "README.md"
-documentation = "https://docs.rs/zju-jw-parser"
+documentation = "https://docs.rs/zju-jw-scraper"
 
 [dependencies]
 unhtml = "0.6"
@@ -17,6 +17,28 @@ unhtml_derive = "0.5"
 failure = "0.1"
 failure_derive = "0.1"
 reformation = "0.4.1"
+interfacer-http = { version = "0.1", features = ["encode", "serde-base", "serde-urlencoded", "unhtml-html"] }
+interfacer-http-hyper = { version = "0.1", git = "https://github.com/Hexilee/interfacer-http", branch = "master", optional = true}
+
+[features]
+test = ["interfacer-http-hyper"]
+
+[patch.crates-io]
+hyper = { git = "https://github.com/hyperium/hyper", branch = "master" }
+syn-next = { git = "https://github.com/dtolnay/syn", branch = "master"}
+proc-macro2-next = { git = "https://github.com/alexcrichton/proc-macro2", branch = "next" }
+quote-next = { git = "https://github.com/dtolnay/quote" }
+const-concat = { git = "https://github.com/Vurich/const-concat", branch = "master" }
+
+[patch."https://github.com/tokio-rs/tokio"]
+tokio = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
+tokio-executor = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
+tokio-io = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
+tokio-reactor = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
+tokio-sync = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
+tokio-tcp = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
+tokio-timer = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
+tokio-threadpool = { git = "https://github.com/tokio-rs/tokio.git", rev = "6cbe3d4f82f2c10be108366ece63e1fb180c90b9" }
 
 [badges]
-travis-ci = { repository = "QSCTech/jw-parser", branch = "master" }
+travis-ci = { repository = "QSCTech/jw-scraper", branch = "master" }
