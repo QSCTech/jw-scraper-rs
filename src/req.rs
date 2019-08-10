@@ -33,8 +33,21 @@ impl<'a> LoginBody<'a> {
             view_state,
             username,
             password,
-            radio_button: &[0xd1, 0xa7, 0xc9, 0xfa][..], // encoding in gbk: "学生"
+            radio_button: &[0xD1, 0xA7, 0xC9, 0xFA], // encoding in gbk: "学生"
             text1: "",
         }
+    }
+}
+
+#[cfg(all(test, feature = "test"))]
+mod tests {
+    use super::*;
+    use interfacer_http::{ToContent, ContentType, content_types::APPLICATION_FORM};
+
+    #[test]
+    fn login_body() {
+        let body = LoginBody::new("qtqy470yt70q", "3160100000", "123456");
+        let data: Vec<u8> = body.to_content(&ContentType::new(APPLICATION_FORM, None, None)).unwrap();
+        println!("{}", &String::from_utf8_lossy(data.as_slice()));
     }
 }

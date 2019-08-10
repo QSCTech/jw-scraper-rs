@@ -20,6 +20,10 @@ failure = "0.1"
 failure_derive = "0.1"
 reformation = "0.4.1"
 interfacer-http = { version = "0.1", features = ["encode", "serde-base", "serde-urlencoded", "unhtml-html"] }
+serde_urlencoded = { version = "0.5.1", optional = true }
+
+[features]
+test = ["serde_urlencoded"]
 
 [badges]
 travis-ci = { repository = "QSCTech/jw-scraper", branch = "master" }
