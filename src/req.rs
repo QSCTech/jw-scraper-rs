@@ -67,6 +67,27 @@ pub struct ExamsReq<'a> {
     semester: &'a str,
 }
 
+#[derive(Serialize, Deserialize, ToContent, Debug)]
+pub struct ScoresReq<'a> {
+    #[serde(rename = "__VIEWSTATE")]
+    view_state: &'a str,
+
+    #[serde(rename = "ddlXN")]
+    school_year: &'a str,
+
+    #[serde(rename = "ddlXQ")]
+    semester: &'a str,
+
+    #[serde(rename = "txtQSCJ")]
+    lower_bound: &'a str,
+
+    #[serde(rename = "txtZZCJ")]
+    upper_bound: &'a str,
+
+    #[serde(rename = "Button2")]
+    search_button: &'a str,
+}
+
 impl<'a> LoginBody<'a> {
     pub fn new(view_state: &'a str, username: &'a str, password: &'a str) -> Self {
         Self {
@@ -113,6 +134,21 @@ impl<'a> ExamsReq<'a> {
             view_state,
             school_year,
             semester,
+        }
+    }
+}
+
+impl<'a> ScoresReq<'a> {
+    pub fn new(
+        view_state: &'a str,
+    ) -> Self {
+        Self {
+            view_state,
+            school_year: "",
+            semester: "",
+            lower_bound: "",
+            upper_bound: "",
+            search_button: "在校学习成绩查询",
         }
     }
 }
@@ -186,6 +222,25 @@ mod tests {
 
         assert_eq!(
             "__EVENTTARGET=xnd&__EVENTARGUMENT=&__VIEWSTATE=dDwxNTc0MzA5MTU4Ozs%2Bb5wKASjiu%2BfSjITNzcKuKXEUyXg%3D&xnd=2018-2019&xqd=2%7C%B4%BA",
+            &String::from_utf8(data).unwrap()
+        );
+    }
+
+    #[test]
+    fn scores_req() {
+        let req = ScoresReq::new(
+            "dDwxNTc0MzA5MTU4Ozs+b5wKASjiu+fSjITNzcKuKXEUyXg=",
+        );
+        let data: Vec<u8> = req
+            .to_content(&ContentType::new(
+                APPLICATION_FORM,
+                Some(CHARSET_GB2312),
+                None,
+            ))
+            .unwrap();
+
+        assert_eq!(
+            "__VIEWSTATE=dDwxNTc0MzA5MTU4Ozs%2Bb5wKASjiu%2BfSjITNzcKuKXEUyXg%3D&ddlXN=&ddlXQ=&txtQSCJ=&txtZZCJ=&Button2=%D4%DA%D0%A3%D1%A7%CF%B0%B3%C9%BC%A8%B2%E9%D1%AF",
             &String::from_utf8(data).unwrap()
         );
     }
