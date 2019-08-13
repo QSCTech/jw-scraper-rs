@@ -24,5 +24,9 @@ trait JWInterface: Clone {
 
     #[get("xskbcx.aspx?xh={stu_id}")]
     #[expect(200, TEXT_HTML_CHARSET_GB2312)]
-    async fn get_default_courses(&self, stu_id: &str, #[header(COOKIE)] cookie: &str) -> Result<Response<CoursesPage>>;
+    async fn get_default_courses(
+        &self,
+        stu_id: &str,
+        #[header(COOKIE)] cookie: &str
+    ) -> Result<Response<CoursesPage>>;
 }
