@@ -87,11 +87,15 @@ pub struct ExamTime {
     pub end_min: u32,
 }
 
-impl FromStr for ExamTime {
-    type Err = err::DeserializeError;
-    fn from_str(raw_time: &str) -> Result<Self, Self::Err> {
-        Ok(ExamTime::parse(raw_time)?)
-    }
+/// match string like: (2016-2017-1)-021E0010-0089096-1
+#[derive(Reformation, FromText, Eq, PartialEq, Debug)]
+#[reformation(r"\({school_year}-{semester}\)-{code}")]
+pub struct CourseIdentifier {
+    #[reformation("[0-9]{4}-[0-9]{4}")]
+    pub school_year: String,
+    pub semester: u8, // 1 for "秋冬"，2 for "春夏"
+    #[reformation("[A-Z0-9]*")]
+    pub code: String,
 }
 
 #[derive(FromHtml)]
@@ -191,13 +195,6 @@ pub struct MajorSummaryTable {
     pub total_credit: f32,
 }
 
-impl FromStr for MajorSummaryTable {
-    type Err = err::DeserializeError;
-    fn from_str(data: &str) -> Result<Self, Self::Err> {
-        Ok(Self::parse(data)?)
-    }
-}
-
 #[derive(FromHtml)]
 pub struct Score {
     #[html(selector = "td:nth-child(1)", attr = "inner")]
@@ -257,6 +254,21 @@ pub struct CourseInfo {
     #[html(selector = "#kcjj", attr = "inner")]
     pub intro: String,
 }
+
+macro_rules! impl_from_str {
+    ($typ:ty) => {
+        impl FromStr for $typ {
+            type Err = err::DeserializeError;
+            fn from_str(data: &str) -> Result<Self, Self::Err> {
+                Ok(Self::parse(data)?)
+            }
+        }
+    };
+}
+
+impl_from_str!(ExamTime);
+impl_from_str!(CourseIdentifier);
+impl_from_str!(MajorSummaryTable);
 
 #[cfg(test)]
 mod tests;
