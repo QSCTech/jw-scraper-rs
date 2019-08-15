@@ -264,5 +264,19 @@ pub struct TotalCreditPage {
     pub credit: f32,
 }
 
+#[derive(FromHtml)]
+pub struct CourseInfo {
+    #[html(selector = "#kcdm", attr = "inner")]
+    pub code: String,
+    #[html(selector = "#kczwmc", attr = "inner")]
+    pub name: String,
+    #[html(selector = "#kkxy", attr = "inner")]
+    pub college: String,
+    #[html(selector = "#xf", attr = "inner")]
+    pub credit: f32,
+    #[html(selector = "#zxs", attr = "inner")]
+    pub hours_per_week: String,
+}
+
 #[cfg(test)]
 mod tests;
