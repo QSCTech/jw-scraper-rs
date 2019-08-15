@@ -5,8 +5,8 @@ use self::pages::{
     SCORES_BASE_PAGE, SCORES_PAGE, TOTAL_CREDIT_PAGE,
 };
 use super::{
-    CoursesPage, ExamTime, ExamsPage, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
-    ObjectMovedPage, ScoresBasePage, ScoresPage, TotalCreditPage,
+    CourseInfo, CoursesPage, ExamTime, ExamsPage, LoginPage, MajorScore, MajorScoresPage,
+    MajorSummaryTable, ObjectMovedPage, ScoresBasePage, ScoresPage, TotalCreditPage,
 };
 use reformation::Reformation;
 use unhtml::FromHtml;
@@ -161,4 +161,19 @@ fn scores_base_page() {
 fn total_credit_page() {
     let TotalCreditPage { credit } = TotalCreditPage::from_html(TOTAL_CREDIT_PAGE).unwrap();
     assert_eq!(83f32, credit);
+}
+
+#[test]
+fn course_info() {
+    let info: CourseInfo = CourseInfo::from_html(COURSE_INFO).unwrap();
+    assert_eq!("74120140", &info.code);
+    assert_eq!("微机原理与接口技术", &info.name);
+    assert_eq!("海洋学院", &info.college);
+    assert_eq!(3.0, info.credit);
+    assert_eq!("2.5-1.0", &info.hours_per_week);
+    assert_eq!("电路原理、模拟电路技术、数字电路技术", &info.prerequisite);
+    assert_eq!(
+        "本课程以8051微控制器为例，介绍微控制器基本原理和接口技术。具体包括微机技术概论、微控制器的工作原理、组成结构，指令系统与汇编程序设计，C51与程序设计；微控制器功能模块（中断系统、定时器/计数器和串行接口）的工作原理和应用；多种微机接口技术（按键/显示接口、A/D与D/A接口）的原理与应用。通过课程的理论学习和实践训练，使学生系统地了解和掌握微控制器的原理、功能和应用方法，并具备一定的微控制器系统的设计、开发和调试能力。",
+        &info.intro
+    );
 }

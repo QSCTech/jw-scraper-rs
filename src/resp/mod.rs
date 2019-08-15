@@ -252,6 +252,10 @@ pub struct CourseInfo {
     pub credit: f32,
     #[html(selector = "#zxs", attr = "inner")]
     pub hours_per_week: String,
+    #[html(selector = "#yxyq", attr = "inner")]
+    pub prerequisite: String,
+    #[html(selector = "#kcjj", attr = "inner")]
+    pub intro: String,
 }
 
 #[cfg(test)]
