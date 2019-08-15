@@ -43,7 +43,7 @@ pub struct SelectMenu {
     pub all_options: Vec<String>,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, Eq, PartialEq, Debug)]
 pub struct Course {
     #[html(selector = "td:nth-child(1) > a", attr = "inner")]
     pub code: String,
@@ -75,7 +75,7 @@ pub struct CoursesPage {
 }
 
 /// match string like: 2019年01月13日(08:00-10:00)
-#[derive(Reformation, FromText)]
+#[derive(Reformation, FromText, Eq, PartialEq, Debug)]
 #[reformation(r"{year}年{month}月{day}日\({start_hour}:{start_min}-{end_hour}:{end_min}\)")]
 pub struct ExamTime {
     pub year: i32,

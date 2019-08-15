@@ -4,9 +4,8 @@ use self::pages::{
     COURSES_PAGE, COURSE_INFO, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE,
     SCORES_BASE_PAGE, SCORES_PAGE, TOTAL_CREDIT_PAGE,
 };
-use super::ExamTime;
 use super::{
-    CoursesPage, ExamsPage, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
+    CoursesPage, ExamTime, ExamsPage, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
     ObjectMovedPage, ScoresBasePage, ScoresPage, TotalCreditPage,
 };
 use reformation::Reformation;
@@ -76,14 +75,18 @@ fn exams() {
 
 #[test]
 fn exam_time_regex() {
-    let time = ExamTime::parse("2019年01月13日(08:00-10:00)").unwrap();
-    assert_eq!(2019, time.year);
-    assert_eq!(1, time.month);
-    assert_eq!(13, time.day);
-    assert_eq!(8, time.start_hour);
-    assert_eq!(0, time.start_min);
-    assert_eq!(10, time.end_hour);
-    assert_eq!(0, time.end_min);
+    assert_eq!(
+        ExamTime::parse("2019年01月13日(08:00-10:00)").unwrap(),
+        ExamTime {
+            year: 2019,
+            month: 1,
+            day: 13,
+            start_hour: 8,
+            start_min: 0,
+            end_hour: 10,
+            end_min: 0
+        }
+    );
 }
 
 #[test]
