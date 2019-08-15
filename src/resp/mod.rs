@@ -87,11 +87,11 @@ pub struct ExamTime {
     pub end_min: u32,
 }
 
-/// match string like: (2016-2017-1)-021E0010-0089096-1
+/// match string like: (2017-2018-1)-74188010-0089096-1
 #[derive(Reformation, FromText, Eq, PartialEq, Debug)]
-#[reformation(r"\({school_year}-{semester}\)-{code}")]
+#[reformation(r"\({school_year}-{semester}\)-{code}.*")]
 pub struct CourseIdentifier {
-    #[reformation("[0-9]{4}-[0-9]{4}")]
+    #[reformation("\\d+-\\d+")]
     pub school_year: String,
     pub semester: u8, // 1 for "秋冬"，2 for "春夏"
     #[reformation("[A-Z0-9]*")]

@@ -5,8 +5,9 @@ use self::pages::{
     SCORES_BASE_PAGE, SCORES_PAGE, TOTAL_CREDIT_PAGE,
 };
 use super::{
-    CourseInfo, CoursesPage, ExamTime, ExamsPage, LoginPage, MajorScore, MajorScoresPage,
-    MajorSummaryTable, ObjectMovedPage, ScoresBasePage, ScoresPage, TotalCreditPage,
+    CourseIdentifier, CourseInfo, CoursesPage, ExamTime, ExamsPage, LoginPage, MajorScore,
+    MajorScoresPage, MajorSummaryTable, ObjectMovedPage, ScoresBasePage, ScoresPage,
+    TotalCreditPage,
 };
 use reformation::Reformation;
 use unhtml::FromHtml;
@@ -175,5 +176,25 @@ fn course_info() {
     assert_eq!(
         "本课程以8051微控制器为例，介绍微控制器基本原理和接口技术。具体包括微机技术概论、微控制器的工作原理、组成结构，指令系统与汇编程序设计，C51与程序设计；微控制器功能模块（中断系统、定时器/计数器和串行接口）的工作原理和应用；多种微机接口技术（按键/显示接口、A/D与D/A接口）的原理与应用。通过课程的理论学习和实践训练，使学生系统地了解和掌握微控制器的原理、功能和应用方法，并具备一定的微控制器系统的设计、开发和调试能力。",
         &info.intro
+    );
+}
+
+#[test]
+fn course_identifier() {
+    assert_eq!(
+        CourseIdentifier {
+            school_year: "2017-2018".into(),
+            semester: 1,
+            code: "74188010".into(),
+        },
+        "(2017-2018-1)-74188010-0089096-1".parse().unwrap()
+    );
+    assert_eq!(
+        CourseIdentifier {
+            school_year: "2017-2018".into(),
+            semester: 1,
+            code: "761T0010".into(),
+        },
+        "(2017-2018-1)-761T0010".parse().unwrap()
     );
 }
