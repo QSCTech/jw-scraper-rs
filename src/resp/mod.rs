@@ -8,19 +8,22 @@ use unhtml::derive::{FromHtml, FromText};
 pub struct HiddenForm {
     #[html(
         selector = "input[type=\"hidden\"][name=\"__EVENTTARGET\"]",
-        attr = "value"
+        attr = "value",
+        default
     )]
     pub event_target: String,
 
     #[html(
         selector = "input[type=\"hidden\"][name=\"__EVENTARGUMENT\"]",
-        attr = "value"
+        attr = "value",
+        default
     )]
     pub event_argument: String,
 
     #[html(
         selector = "input[type=\"hidden\"][name=\"__VIEWSTATE\"]",
-        attr = "value"
+        attr = "value",
+        default
     )]
     pub view_state: String,
 }
