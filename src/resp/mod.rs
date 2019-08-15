@@ -181,22 +181,17 @@ pub struct MajorScore {
     pub school_year: String,
 }
 
-#[derive(FromText)]
+#[derive(Reformation, FromText)]
+#[reformation(r"主修专业课程累计平均绩点={gpa}.*主修专业课程累计获得总学分={total_credit}")]
 pub struct MajorSummaryTable {
-    pub gpa: KVPattern,
-    pub total_credit: KVPattern,
+    pub gpa: f32,
+    pub total_credit: f32,
 }
 
 impl FromStr for MajorSummaryTable {
     type Err = err::DeserializeError;
     fn from_str(data: &str) -> Result<Self, Self::Err> {
-        let patterns = data
-            .split("&nbsp;&nbsp;&nbsp;&nbsp;")
-            .collect::<Vec<&str>>();
-        Ok(Self {
-            gpa: KVPattern::parse(patterns[0])?,
-            total_credit: KVPattern::parse(patterns[1])?,
-        })
+        Ok(Self::parse(data)?)
     }
 }
 
@@ -234,14 +229,6 @@ pub struct ScoresBasePage {
 
     #[html(selector = "#ddlXN")]
     pub school_year: SelectMenu,
-}
-
-/// match string like: 主修专业课程累计获得总学分=58.00
-#[derive(Reformation)]
-#[reformation(r"{key}={value}")]
-pub struct KVPattern {
-    pub key: String,
-    pub value: f32,
 }
 
 #[derive(FromHtml)]

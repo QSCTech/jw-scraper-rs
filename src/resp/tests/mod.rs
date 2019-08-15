@@ -6,7 +6,7 @@ use self::pages::{
 };
 use super::ExamTime;
 use super::{
-    CoursesPage, ExamsPage, KVPattern, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
+    CoursesPage, ExamsPage, LoginPage, MajorScore, MajorScoresPage, MajorSummaryTable,
     ObjectMovedPage, ScoresBasePage, ScoresPage, TotalCreditPage,
 };
 use reformation::Reformation;
@@ -93,22 +93,13 @@ fn object_moved_page() {
 }
 
 #[test]
-fn kv_pattern() {
-    let pattern = KVPattern::parse("主修专业课程累计获得总学分=58.00").unwrap();
-    assert_eq!("主修专业课程累计获得总学分", pattern.key);
-    assert_eq!(58.00f32, pattern.value);
-}
-
-#[test]
 fn major_summary_table() {
     let MajorSummaryTable { gpa, total_credit } =
         "主修专业课程累计平均绩点=2.25&nbsp;&nbsp;&nbsp;&nbsp;主修专业课程累计获得总学分=58.00"
             .parse()
             .unwrap();
-    assert_eq!("主修专业课程累计平均绩点", gpa.key);
-    assert_eq!(2.25f32, gpa.value);
-    assert_eq!("主修专业课程累计获得总学分", total_credit.key);
-    assert_eq!(58.00f32, total_credit.value);
+    assert_eq!(2.25, gpa);
+    assert_eq!(58.00, total_credit);
 }
 
 #[test]
@@ -131,10 +122,8 @@ fn major_scores_page() {
         summary_table,
     } = MajorScoresPage::from_html(MAJOR_SCORES_PAGE).unwrap();
     let MajorSummaryTable { gpa, total_credit } = summary_table;
-    assert_eq!("主修专业课程累计平均绩点", gpa.key);
-    assert_eq!(2.25f32, gpa.value);
-    assert_eq!("主修专业课程累计获得总学分", total_credit.key);
-    assert_eq!(58.00f32, total_credit.value);
+    assert_eq!(2.25, gpa);
+    assert_eq!(58.00, total_credit);
     assert_eq!(35, scores.len());
 }
 
