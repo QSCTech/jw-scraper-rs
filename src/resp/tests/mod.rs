@@ -133,7 +133,7 @@ fn major_scores_page() {
 #[test]
 fn scores_page() {
     let ScoresPage { scores } = ScoresPage::from_html(SCORES_PAGE).unwrap();
-    assert_eq!(23, scores.len());
+    assert_eq!(72, scores.len());
     let score = &scores[0];
     assert_eq!("(2016-2017-1)-021E0010-0092466-5", &score.identifier);
     assert_eq!("思想道德修养与法律基础", &score.course_name);
