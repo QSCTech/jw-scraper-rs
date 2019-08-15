@@ -1,8 +1,8 @@
 mod pages;
 
 use self::pages::{
-    COURSES_PAGE, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE, SCORES_BASE_PAGE,
-    SCORES_PAGE, TOTAL_CREDIT_PAGE, COURSE_INFO
+    COURSES_PAGE, COURSE_INFO, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE,
+    SCORES_BASE_PAGE, SCORES_PAGE, TOTAL_CREDIT_PAGE,
 };
 use super::ExamTime;
 use super::{
@@ -101,10 +101,10 @@ fn kv_pattern() {
 
 #[test]
 fn major_summary_table() {
-    let MajorSummaryTable { gpa, total_credit } = MajorSummaryTable::from_html(
-        "主修专业课程累计平均绩点=2.25&nbsp;&nbsp;&nbsp;&nbsp;主修专业课程累计获得总学分=58.00",
-    )
-    .unwrap();
+    let MajorSummaryTable { gpa, total_credit } =
+        "主修专业课程累计平均绩点=2.25&nbsp;&nbsp;&nbsp;&nbsp;主修专业课程累计获得总学分=58.00"
+            .parse()
+            .unwrap();
     assert_eq!("主修专业课程累计平均绩点", gpa.key);
     assert_eq!(2.25f32, gpa.value);
     assert_eq!("主修专业课程累计获得总学分", total_credit.key);

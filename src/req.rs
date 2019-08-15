@@ -139,9 +139,7 @@ impl<'a> ExamsReq<'a> {
 }
 
 impl<'a> ScoresReq<'a> {
-    pub fn new(
-        view_state: &'a str,
-    ) -> Self {
+    pub fn new(view_state: &'a str) -> Self {
         Self {
             view_state,
             school_year: "",
@@ -228,9 +226,7 @@ mod tests {
 
     #[test]
     fn scores_req() {
-        let req = ScoresReq::new(
-            "dDwxNTc0MzA5MTU4Ozs+b5wKASjiu+fSjITNzcKuKXEUyXg=",
-        );
+        let req = ScoresReq::new("dDwxNTc0MzA5MTU4Ozs+b5wKASjiu+fSjITNzcKuKXEUyXg=");
         let data: Vec<u8> = req
             .to_content(&ContentType::new(
                 APPLICATION_FORM,

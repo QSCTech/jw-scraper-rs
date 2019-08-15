@@ -18,15 +18,15 @@ trait JWInterface: Clone {
     #[expect(200, TEXT_HTML_CHARSET_GB2312)]
     async fn get_login_page(&self) -> Result<Response<LoginPage>>;
 
-    #[post("default2.aspx", APPLICATION_FORM)]
-    #[expect(302)]
-    async fn login<'a>(&self, #[body] body: &LoginBody<'a>) -> Result<Response<()>>;
-
-    #[get("xskbcx.aspx?xh={stu_id}")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
-    async fn get_default_courses(
-        &self,
-        stu_id: &str,
-        #[header(COOKIE)] cookie: &str
-    ) -> Result<Response<CoursesPage>>;
+    //    #[post("default2.aspx", APPLICATION_FORM)]
+    //    #[expect(302)]
+    //    async fn login<'a>(&self, #[body] body: &LoginBody<'a>) -> Result<Response<()>>;
+    //
+    //    #[get("xskbcx.aspx?xh={stu_id}")]
+    //    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    //    async fn get_default_courses(
+    //        &self,
+    //        stu_id: &str,
+    //        #[header(COOKIE)] cookie: &str
+    //    ) -> Result<Response<CoursesPage>>;
 }

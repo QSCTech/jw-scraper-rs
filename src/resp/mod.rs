@@ -2,22 +2,19 @@ pub mod err;
 use interfacer_http::derive::FromContent;
 use reformation::Reformation;
 use std::str::FromStr;
-use unhtml::{self, VecFromHtml};
-use unhtml_derive::FromHtml;
+use unhtml::derive::{FromHtml, FromText};
 
 #[derive(FromHtml)]
 pub struct HiddenForm {
     #[html(
         selector = "input[type=\"hidden\"][name=\"__EVENTTARGET\"]",
-        attr = "value",
-        default = ""
+        attr = "value"
     )]
     pub event_target: String,
 
     #[html(
         selector = "input[type=\"hidden\"][name=\"__EVENTARGUMENT\"]",
-        attr = "value",
-        default = ""
+        attr = "value"
     )]
     pub event_argument: String,
 
@@ -36,11 +33,7 @@ pub struct LoginPage {
 
 #[derive(FromHtml)]
 pub struct SelectMenu {
-    #[html(
-        selector = "option[selected=\"selected\"]",
-        attr = "value",
-        default = ""
-    )]
+    #[html(selector = "option[selected=\"selected\"]", attr = "value")]
     pub selected: String,
 
     #[html(selector = "option", attr = "value")]
@@ -79,7 +72,7 @@ pub struct CoursesPage {
 }
 
 /// match string like: 2019年01月13日(08:00-10:00)
-#[derive(Reformation)]
+#[derive(Reformation, FromText)]
 #[reformation(r"{year}年{month}月{day}日\({start_hour}:{start_min}-{end_hour}:{end_min}\)")]
 pub struct ExamTime {
     pub year: i32,
@@ -91,18 +84,10 @@ pub struct ExamTime {
     pub end_min: u32,
 }
 
-pub enum OptionalExamTime {
-    Some(ExamTime),
-    None,
-}
-
-impl FromStr for OptionalExamTime {
+impl FromStr for ExamTime {
     type Err = err::DeserializeError;
     fn from_str(raw_time: &str) -> Result<Self, Self::Err> {
-        match raw_time {
-            "&nbsp;" => Ok(OptionalExamTime::None),
-            other => Ok(OptionalExamTime::Some(ExamTime::parse(other)?)),
-        }
+        Ok(ExamTime::parse(raw_time)?)
     }
 }
 
@@ -124,7 +109,7 @@ pub struct Exam {
     pub semester: String,
 
     #[html(selector = "td:nth-child(7)", attr = "inner")]
-    pub final_exam_time: OptionalExamTime,
+    pub final_exam_time: Option<ExamTime>,
 
     #[html(selector = "td:nth-child(8)", attr = "inner")]
     pub final_exam_place: String,
@@ -133,7 +118,7 @@ pub struct Exam {
     pub final_exam_seat: String,
 
     #[html(selector = "td:nth-child(10)", attr = "inner")]
-    pub mid_exam_time: OptionalExamTime,
+    pub mid_exam_time: Option<ExamTime>,
 
     #[html(selector = "td:nth-child(11)", attr = "inner")]
     pub mid_exam_place: String,
@@ -196,6 +181,7 @@ pub struct MajorScore {
     pub school_year: String,
 }
 
+#[derive(FromText)]
 pub struct MajorSummaryTable {
     pub gpa: KVPattern,
     pub total_credit: KVPattern,
