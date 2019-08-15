@@ -34,7 +34,7 @@ pub struct LoginPage {
 #[derive(FromHtml)]
 pub struct SelectMenu {
     #[html(selector = "option[selected=\"selected\"]", attr = "value")]
-    pub selected: String,
+    pub selected: Option<String>,
 
     #[html(selector = "option", attr = "value")]
     pub all_options: Vec<String>,
