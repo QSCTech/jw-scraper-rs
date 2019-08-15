@@ -67,9 +67,20 @@ fn exams() {
     assert_eq!("2|夏", &page.semester.all_options[5]);
     assert_eq!("2|短", &page.semester.all_options[6]);
     assert_eq!(2, page.exams.len());
-    assert_eq!("(2018-2019-1)-061B9090", &page.exams[0].identifier);
     assert_eq!(
-        "(2018-2019-1)-061B0020-0094312-1",
+        &CourseIdentifier {
+            school_year: "2018-2019".into(),
+            semester: 1,
+            code: "061B9090".into(),
+        },
+        &page.exams[0].identifier
+    );
+    assert_eq!(
+        &CourseIdentifier {
+            school_year: "2018-2019".into(),
+            semester: 1,
+            code: "061B0020".into(),
+        },
         &page.exams[1].identifier
     );
 }
@@ -110,7 +121,14 @@ fn major_summary_table() {
 fn major_score() {
     let score = MajorScore::from_html("
     <table><tr><td>(2016-2017-2)-211G0210-0098253-1</td><td>C程序设计</td><td>85</td><td>85</td><td>3.0</td><td>3.90</td><td>2016-2017</td></tr></table>").unwrap();
-    assert_eq!("(2016-2017-2)-211G0210-0098253-1", &score.identifier);
+    assert_eq!(
+        &CourseIdentifier {
+            school_year: "2016-2017".into(),
+            semester: 2,
+            code: "211G0210".into(),
+        },
+        &score.identifier
+    );
     assert_eq!("C程序设计", &score.course_name);
     assert_eq!("85", &score.raw_score);
     assert_eq!(85f32, score.final_score);
@@ -136,7 +154,14 @@ fn scores_page() {
     let ScoresPage { scores } = ScoresPage::from_html(SCORES_PAGE).unwrap();
     assert_eq!(72, scores.len());
     let score = &scores[0];
-    assert_eq!("(2016-2017-1)-021E0010-0092466-5", &score.identifier);
+    assert_eq!(
+        &CourseIdentifier {
+            school_year: "2016-2017".into(),
+            semester: 1,
+            code: "021E0010".into(),
+        },
+        &score.identifier
+    );
     assert_eq!("思想道德修养与法律基础", &score.course_name);
     assert_eq!("83", &score.raw_score);
     assert_eq!(2.5f32, score.credit);

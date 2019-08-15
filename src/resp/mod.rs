@@ -101,7 +101,7 @@ pub struct CourseIdentifier {
 #[derive(FromHtml)]
 pub struct Exam {
     #[html(selector = "td:nth-child(1)", attr = "inner")]
-    pub identifier: String,
+    pub identifier: CourseIdentifier,
 
     #[html(selector = "td:nth-child(2)", attr = "inner")]
     pub name: String,
@@ -167,7 +167,7 @@ pub struct MajorScoresPage {
 #[derive(FromHtml)]
 pub struct MajorScore {
     #[html(selector = "td:nth-child(1)", attr = "inner")]
-    pub identifier: String,
+    pub identifier: CourseIdentifier,
 
     #[html(selector = "td:nth-child(2)", attr = "inner")]
     pub course_name: String,
@@ -198,7 +198,7 @@ pub struct MajorSummaryTable {
 #[derive(FromHtml)]
 pub struct Score {
     #[html(selector = "td:nth-child(1)", attr = "inner")]
-    pub identifier: String,
+    pub identifier: CourseIdentifier,
 
     #[html(selector = "td:nth-child(2)", attr = "inner")]
     pub course_name: String,
