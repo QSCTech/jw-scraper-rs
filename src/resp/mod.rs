@@ -134,7 +134,7 @@ pub struct Exam {
     pub mid_exam_seat: String,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct ExamsPage {
     #[html(selector = "#_ctl0")]
     pub hidden_form: HiddenForm,
@@ -149,13 +149,13 @@ pub struct ExamsPage {
     pub exams: Vec<Exam>,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct ObjectMovedPage {
     #[html(selector = "a", attr = "href")]
     pub to: String,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct MajorScoresPage {
     #[html(selector = "#DataGrid1 > tbody > tr:nth-child(1n + 2)")]
     pub scores: Vec<MajorScore>,
@@ -216,13 +216,13 @@ pub struct Score {
     pub makeup_score: String,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct ScoresPage {
     #[html(selector = "#DataGrid1 > tbody > tr:nth-child(1n + 2)")]
     pub scores: Vec<Score>,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct ScoresBasePage {
     #[html(selector = "#Form1")]
     pub hidden_form: HiddenForm,
@@ -231,13 +231,13 @@ pub struct ScoresBasePage {
     pub school_year: SelectMenu,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct TotalCreditPage {
     #[html(selector = "#lb_yhxf", attr = "inner")]
     pub credit: f32,
 }
 
-#[derive(FromHtml)]
+#[derive(FromHtml, FromContent)]
 pub struct CourseInfo {
     #[html(selector = "#kcdm", attr = "inner")]
     pub code: String,
