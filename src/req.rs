@@ -1,5 +1,5 @@
 use interfacer_http::derive::ToContent;
-use serde_derive::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, ToContent, Debug)]
 pub struct LoginBody<'a> {

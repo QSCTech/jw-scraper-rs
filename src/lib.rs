@@ -16,7 +16,7 @@ use resp::{
 };
 
 #[http_interface]
-trait JWInterface: Clone {
+pub trait JWInterface {
     #[get("default2.aspx")]
     #[expect(200, TEXT_HTML_CHARSET_GB2312)]
     async fn get_login_page(&self) -> Result<Response<LoginPage>>;
