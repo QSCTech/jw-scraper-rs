@@ -23,9 +23,9 @@ impl Config {
 }
 
 #[tokio::test]
-async fn test_login() -> Result<(), failure::Error> {
+async fn test_login_page() -> Result<(), failure::Error> {
     let config = Config::parse()?;
     let service = Service::new(config.jwb_base_url.parse()?);
-    //    let login_page = service.get_login_page().await?;
+    let login_page = service.get_login_page().await?;
     Ok(())
 }
