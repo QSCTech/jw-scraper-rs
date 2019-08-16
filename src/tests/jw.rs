@@ -1,11 +1,9 @@
-#![feature(async_await)]
-
+use crate::JWInterface;
 use config::ConfigError;
 use interfacer_http::HttpService;
-use interfacer_http_hyper::{Service, Client};
+use interfacer_http_hyper::{Client, Service};
 use serde::{Deserialize, Serialize};
 use tokio::prelude::*;
-use zju_jw_scraper::JWInterface;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
@@ -28,7 +26,6 @@ impl Config {
 async fn test_login() -> Result<(), failure::Error> {
     let config = Config::parse()?;
     let service = Service::new(config.jwb_base_url.parse()?);
-    let login_page = service.get_login_page().await?;
+    //    let login_page = service.get_login_page().await?;
     Ok(())
 }
-

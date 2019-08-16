@@ -4,7 +4,7 @@ use reformation::Reformation;
 use std::str::FromStr;
 use unhtml::derive::{FromHtml, FromText};
 
-#[derive(FromHtml)]
+#[derive(FromHtml, Eq, PartialEq, Debug)]
 pub struct HiddenForm {
     #[html(
         selector = "input[type=\"hidden\"][name=\"__EVENTTARGET\"]",
@@ -271,4 +271,4 @@ impl_from_str!(CourseIdentifier);
 impl_from_str!(MajorSummaryTable);
 
 #[cfg(test)]
-mod tests;
+pub mod tests;

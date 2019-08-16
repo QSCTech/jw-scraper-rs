@@ -1,8 +1,11 @@
-#![feature(custom_attribute, async_await, param_attrs)]
+#![feature(custom_attribute, async_await, param_attrs, async_closure)]
 #![allow(unused_attributes)]
 
 pub mod req;
 pub mod resp;
+
+#[cfg(all(test, feature = "test"))]
+mod tests;
 
 use interfacer_http::{
     content_types::{APPLICATION_FORM_CHARSET_GB2312, TEXT_HTML_CHARSET_GB2312},

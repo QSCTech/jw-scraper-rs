@@ -1,13 +1,13 @@
 mod pages;
 
-use self::pages::{
-    COURSES_PAGE, COURSE_INFO, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE,
-    SCORES_BASE_PAGE, SCORES_PAGE, TOTAL_CREDIT_PAGE,
-};
-use super::{
+pub use super::{
     CourseIdentifier, CourseInfo, CoursesPage, ExamTime, ExamsPage, LoginPage, MajorScore,
     MajorScoresPage, MajorSummaryTable, ObjectMovedPage, ScoresBasePage, ScoresPage,
     TotalCreditPage,
+};
+pub use pages::{
+    COURSES_PAGE, COURSE_INFO, EXAMS_PAGE, LOGIN_PAGE, MAJOR_SCORES_PAGE, OBJECT_MOVED_PAGE,
+    SCORES_BASE_PAGE, SCORES_PAGE, TOTAL_CREDIT_PAGE,
 };
 use reformation::Reformation;
 use unhtml::FromHtml;
