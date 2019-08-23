@@ -8,7 +8,6 @@ pub mod resp;
 mod tests;
 
 use interfacer_http::{
-    content_types::{APPLICATION_FORM_CHARSET_GB2312, TEXT_HTML_CHARSET_GB2312},
     http::header::COOKIE,
     http_interface, Response, Result,
 };
@@ -21,7 +20,7 @@ use resp::{
 #[http_interface]
 pub trait JWInterface {
     #[get("default2.aspx")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_login_page(&self) -> Result<Response<LoginPage>>;
 
     #[post("default2.aspx", APPLICATION_FORM_CHARSET_GB2312)]
