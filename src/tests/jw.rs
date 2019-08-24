@@ -4,14 +4,13 @@ use interfacer_http::{Helper, http::Response, ResponseExt, cookie::Cookie};
 use interfacer_http_hyper::Client;
 use serde::{Deserialize, Serialize};
 use crate::resp::{LoginPage, HiddenForm, CoursesPage};
-use crate::req::LoginBody;
+use crate::req::{LoginBody, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE};
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     pub stu_id: String,
     pub password: String,
     pub jwb_base_url: String,
-    pub login_view_state: String,
 }
 
 impl Config {
@@ -38,7 +37,7 @@ async fn test_login_page() -> Result<(), Box<dyn std::error::Error>> {
         &HiddenForm {
             event_argument: "".into(),
             event_target: "".into(),
-            view_state: config.login_view_state,
+            view_state: LOGIN_VIEW_STATE.into(),
         }
     );
     Ok(())
@@ -54,7 +53,7 @@ async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
-            config.login_view_state.as_str(),
+            LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
         )
@@ -76,7 +75,7 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
-            config.login_view_state.as_str(),
+            LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
         )
@@ -87,6 +86,7 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let courses: Response<CoursesPage> = service.get_default_courses(&config.stu_id, cookie_str).await?;
+    let courses: CoursesPage = service.get_default_courses(&config.stu_id, cookie_str).await?.into_body();
+    assert_eq!(DEFAULT_COURSES_VIEW_STATE, &courses.hidden_form.view_state);
     Ok(())
 }
