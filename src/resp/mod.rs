@@ -1,8 +1,7 @@
-pub mod err;
-use interfacer_http::derive::FromContent;
+use interfacer_http::FromContent;
 use reformation::Reformation;
 use std::str::FromStr;
-use unhtml::derive::{FromHtml, FromText};
+use unhtml::{FromHtml, FromText};
 
 #[derive(FromHtml, Eq, PartialEq, Debug)]
 pub struct HiddenForm {
@@ -258,9 +257,9 @@ pub struct CourseInfo {
 macro_rules! impl_from_str {
     ($typ:ty) => {
         impl FromStr for $typ {
-            type Err = err::DeserializeError;
+            type Err = reformation::Error;
             fn from_str(data: &str) -> Result<Self, Self::Err> {
-                Ok(Self::parse(data)?)
+                Self::parse(data)
             }
         }
     };

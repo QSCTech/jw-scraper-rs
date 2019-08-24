@@ -1,9 +1,10 @@
-use crate::JWInterface;
+use crate::JWService;
 use config::ConfigError;
-use interfacer_http::HttpService;
-use interfacer_http_hyper::{Client, Service};
+use interfacer_http::{HttpClient, Helper};
+use interfacer_http_hyper::Client;
 use serde::{Deserialize, Serialize};
 use tokio::prelude::*;
+use std::error::Error;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
@@ -23,9 +24,13 @@ impl Config {
 }
 
 #[tokio::test]
-async fn test_login_page() -> Result<(), failure::Error> {
+async fn test_login_page() -> Result<(), Box<dyn Error>> {
     let config = Config::parse()?;
-    let service = Service::new(config.jwb_base_url.parse()?);
+    let service = Client::with_helper(
+        Helper::new()
+            .with_base_url(config.jwb_base_url.parse()?)
+            .with_request_initializer(crate::helper::request_initializer)
+    );
     let login_page = service.get_login_page().await?;
     Ok(())
 }

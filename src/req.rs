@@ -1,4 +1,4 @@
-use interfacer_http::derive::ToContent;
+use interfacer_http::ToContent;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, ToContent, Debug)]
@@ -155,8 +155,7 @@ impl<'a> ScoresReq<'a> {
 mod tests {
     use super::*;
     use interfacer_http::{
-        content_types::{APPLICATION_FORM, CHARSET_GB2312},
-        ContentType, ToContent,
+        ToContent,
     };
 
     #[test]
@@ -167,11 +166,7 @@ mod tests {
             "123456",
         );
         let data: Vec<u8> = body
-            .to_content(&ContentType::new(
-                APPLICATION_FORM,
-                Some(CHARSET_GB2312),
-                None,
-            ))
+            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
             .unwrap();
 
         assert_eq!(
@@ -189,11 +184,7 @@ mod tests {
             "1|秋、冬",
         );
         let data: Vec<u8> = req
-            .to_content(&ContentType::new(
-                APPLICATION_FORM,
-                Some(CHARSET_GB2312),
-                None,
-            ))
+            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
             .unwrap();
 
         assert_eq!(
@@ -211,11 +202,7 @@ mod tests {
             "2|春",
         );
         let data: Vec<u8> = req
-            .to_content(&ContentType::new(
-                APPLICATION_FORM,
-                Some(CHARSET_GB2312),
-                None,
-            ))
+            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
             .unwrap();
 
         assert_eq!(
@@ -228,11 +215,7 @@ mod tests {
     fn scores_req() {
         let req = ScoresReq::new("dDwxNTc0MzA5MTU4Ozs+b5wKASjiu+fSjITNzcKuKXEUyXg=");
         let data: Vec<u8> = req
-            .to_content(&ContentType::new(
-                APPLICATION_FORM,
-                Some(CHARSET_GB2312),
-                None,
-            ))
+            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
             .unwrap();
 
         assert_eq!(

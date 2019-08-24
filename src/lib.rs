@@ -1,15 +1,16 @@
-#![feature(custom_attribute, async_await, param_attrs, async_closure)]
+#![feature(custom_attribute, param_attrs, async_closure)]
 #![allow(unused_attributes)]
 
 pub mod req;
 pub mod resp;
+pub mod helper;
 
 #[cfg(all(test, feature = "test"))]
 mod tests;
 
 use interfacer_http::{
-    http::header::COOKIE,
-    http_interface, Response, Result,
+    http::header::COOKIE, http::Response,
+    http_service,
 };
 use req::{CoursesReq, ExamsReq, LoginBody, ScoresReq};
 use resp::{
@@ -17,84 +18,86 @@ use resp::{
     TotalCreditPage,
 };
 
-#[http_interface]
-pub trait JWInterface {
+#[http_service]
+pub trait JWService {
+    type Err;
+
     #[get("default2.aspx")]
     #[expect(200, "text/html; charset=gb2312")]
-    async fn get_login_page(&self) -> Result<Response<LoginPage>>;
+    async fn get_login_page(&self) -> Result<Response<LoginPage>, Self::Err>;
 
-    #[post("default2.aspx", APPLICATION_FORM_CHARSET_GB2312)]
+    #[post("default2.aspx", "application/x-www-form-urlencoded; charset=gb2312")]
     #[expect(302)]
-    async fn login<'a>(&self, #[body] body: &LoginBody<'a>) -> Result<Response<()>>;
+    async fn login<'a>(&self, #[body] body: &LoginBody<'a>) -> Result<Response<()>, Self::Err>;
 
     #[get("html_kc/{code}.html")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
-    async fn get_course_info(&self, code: &str) -> Result<Response<CourseInfo>>;
+    #[expect(200, "text/html; charset=gb2312")]
+    async fn get_course_info(&self, code: &str) -> Result<Response<CourseInfo>, Self::Err>;
 
     #[get("xskbcx.aspx?xh={stu_id}")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_default_courses(
         &self,
         stu_id: &str,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<CoursesPage>>;
+    ) -> Result<Response<CoursesPage>, Self::Err>;
 
-    #[post("xskbcx.aspx?xh={stu_id}", APPLICATION_FORM_CHARSET_GB2312)]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[post("xskbcx.aspx?xh={stu_id}", "application/x-www-form-urlencoded; charset=gb2312")]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_courses<'a>(
         &self,
         stu_id: &str,
         #[body] body: &CoursesReq<'a>,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<CoursesPage>>;
+    ) -> Result<Response<CoursesPage>, Self::Err>;
 
     #[get("xskscx.aspx?xh={stu_id}")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_default_exams(
         &self,
         stu_id: &str,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<ExamsPage>>;
+    ) -> Result<Response<ExamsPage>, Self::Err>;
 
-    #[post("xskscx.aspx?xh={stu_id}", APPLICATION_FORM_CHARSET_GB2312)]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[post("xskscx.aspx?xh={stu_id}", "application/x-www-form-urlencoded; charset=gb2312")]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_exams<'a>(
         &self,
         stu_id: &str,
         #[body] body: &ExamsReq<'a>,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<ExamsPage>>;
+    ) -> Result<Response<ExamsPage>, Self::Err>;
 
     #[get("xscj.aspx?xh={stu_id}")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_scores_base(
         &self,
         stu_id: &str,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<ScoresBasePage>>;
+    ) -> Result<Response<ScoresBasePage>, Self::Err>;
 
-    #[post("xscj.aspx?xh={stu_id}", APPLICATION_FORM_CHARSET_GB2312)]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[post("xscj.aspx?xh={stu_id}", "application/x-www-form-urlencoded; charset=gb2312")]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_scores<'a>(
         &self,
         stu_id: &str,
         #[body] body: &ScoresReq<'a>,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<ScoresPage>>;
+    ) -> Result<Response<ScoresPage>, Self::Err>;
 
     #[get("xscj_zg.aspx?xh={stu_id}")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_major_scores(
         &self,
         stu_id: &str,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<MajorScoresPage>>;
+    ) -> Result<Response<MajorScoresPage>, Self::Err>;
 
     #[get("xs_txsqddy.aspx?xh={stu_id}")]
-    #[expect(200, TEXT_HTML_CHARSET_GB2312)]
+    #[expect(200, "text/html; charset=gb2312")]
     async fn get_total_credit(
         &self,
         stu_id: &str,
         #[header(COOKIE)] cookie: &str,
-    ) -> Result<Response<TotalCreditPage>>;
+    ) -> Result<Response<TotalCreditPage>, Self::Err>;
 }
