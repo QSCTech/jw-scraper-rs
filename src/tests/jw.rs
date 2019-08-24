@@ -1,9 +1,9 @@
 use crate::JWService;
 use config::ConfigError;
-use interfacer_http::{Helper, http::Response, ResponseExt};
+use interfacer_http::{Helper, http::Response, ResponseExt, cookie::Cookie};
 use interfacer_http_hyper::Client;
 use serde::{Deserialize, Serialize};
-use crate::resp::{LoginPage, HiddenForm};
+use crate::resp::{LoginPage, HiddenForm, CoursesPage};
 use crate::req::LoginBody;
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -59,6 +59,34 @@ async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
             config.password.as_str(),
         )
     ).await?;
-    let cookie = resp.cookie_map().unwrap().get("ASP.NET_SessionId");
+    let cookies = resp.cookie_map()?;
+    let cookie = cookies.get("ASP.NET_SessionId");
+    assert!(cookie.is_some());
+    assert_eq!(1, cookie.unwrap().len());
+    Ok(())
+}
+
+#[tokio::test]
+async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
+    let config = Config::parse()?;
+    let service = Client::new().with_helper(
+        Helper::new()
+            .with_base_url(config.jwb_base_url.parse()?)
+            .with_request_initializer(crate::helper::request_initializer)
+    );
+    let resp: Response<()> = service.login(
+        LoginBody::new(
+            config.login_view_state.as_str(),
+            config.stu_id.as_str(),
+            config.password.as_str(),
+        )
+    ).await?;
+    let cookies = resp.cookie_map()?;
+    let cookie = cookies.get("ASP.NET_SessionId");
+    assert!(cookie.is_some());
+    assert_eq!(1, cookie.unwrap().len());
+    let (name, value) = cookie.unwrap()[0].name_value();
+    let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
+    let courses: Response<CoursesPage> = service.get_default_courses(&config.stu_id, cookie_str).await?;
     Ok(())
 }
