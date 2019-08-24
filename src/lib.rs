@@ -27,8 +27,8 @@ pub trait JWService {
     async fn get_login_page(&self) -> Result<Response<LoginPage>, Self::Err>;
 
     #[post("default2.aspx", "application/x-www-form-urlencoded; charset=gb2312")]
-    #[expect(302)]
-    async fn login<'a>(&self, #[body] body: &LoginBody<'a>) -> Result<Response<()>, Self::Err>;
+    #[expect(302, "text/html; charset=gb2312")]
+    async fn login<'a>(&self, #[body] body: LoginBody<'a>) -> Result<Response<()>, Self::Err>;
 
     #[get("html_kc/{code}.html")]
     #[expect(200, "text/html; charset=gb2312")]
@@ -47,7 +47,7 @@ pub trait JWService {
     async fn get_courses<'a>(
         &self,
         stu_id: &str,
-        #[body] body: &CoursesReq<'a>,
+        #[body] body: CoursesReq<'a>,
         #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<CoursesPage>, Self::Err>;
 
@@ -64,7 +64,7 @@ pub trait JWService {
     async fn get_exams<'a>(
         &self,
         stu_id: &str,
-        #[body] body: &ExamsReq<'a>,
+        #[body] body: ExamsReq<'a>,
         #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<ExamsPage>, Self::Err>;
 
@@ -81,7 +81,7 @@ pub trait JWService {
     async fn get_scores<'a>(
         &self,
         stu_id: &str,
-        #[body] body: &ScoresReq<'a>,
+        #[body] body: ScoresReq<'a>,
         #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<ScoresPage>, Self::Err>;
 
