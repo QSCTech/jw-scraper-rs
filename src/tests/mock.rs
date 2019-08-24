@@ -4,7 +4,7 @@ use interfacer_http::{ async_trait, http::{header::CONTENT_TYPE, Request, Respon
 
 use interfacer_http_hyper::{Result, Error};
 
-use crate::{resp::{LoginPage, HiddenForm, tests::LOGIN_PAGE}, JWService};
+use crate::{resp::{HiddenForm, tests::LOGIN_PAGE}, JWService};
 use encoding::label::encoding_from_whatwg_label;
 use encoding::EncoderTrap;
 use tokio::prelude::*;
@@ -45,8 +45,12 @@ where
 
 async fn login_page_handler(req: Request<Vec<u8>>) -> Result<Response<Vec<u8>>> {
     assert_eq!(
-        req.uri(),
-        Url::parse(BASE_URL)?.join("default2.aspx")?.as_str()
+        Url::parse(BASE_URL)?.join("default2.aspx")?.as_str(),
+        req.uri()
+    );
+    assert_eq!(
+        "GET",
+        req.method()
     );
     Ok(Response::builder()
         .status(200)
