@@ -1,10 +1,10 @@
-use crate::client::client;
-use crate::raw::req::{
+use super::req::{
     CoursesReq, ExamsReq, LoginBody, ScoresReq, DEFAULT_COURSES_VIEW_STATE,
     DEFAULT_EXAMS_VIEW_STATE, LOGIN_VIEW_STATE, SCORES_BASE_VIEW_STATE,
 };
-use crate::raw::resp::{CourseInfo, HiddenForm};
-use crate::raw::{RawJWService, JWB_COOKIE_NAME};
+use super::resp::{CourseInfo, HiddenForm};
+use super::{RawJWService, JWB_COOKIE_NAME};
+use crate::client::client;
 use config::ConfigError;
 use interfacer_http::{cookie::Cookie, ResponseExt};
 use serde::{Deserialize, Serialize};

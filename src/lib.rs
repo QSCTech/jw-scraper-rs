@@ -20,3 +20,6 @@ pub use service::JWService;
 mod raw;
 mod req;
 mod service;
+
+#[cfg(all(test, feature = "test"))]
+mod tests;

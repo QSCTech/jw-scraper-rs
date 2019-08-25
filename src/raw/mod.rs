@@ -2,7 +2,7 @@ pub mod req;
 pub mod resp;
 
 #[cfg(all(test, feature = "test"))]
-mod tests;
+pub mod tests;
 
 use interfacer_http::{http::header::COOKIE, http::Response, http_service};
 use req::{CoursesReq, ExamsReq, LoginBody, ScoresReq};
