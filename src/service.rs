@@ -7,10 +7,7 @@ use crate::{
     Course, CourseInfo, CourseSemester, Exam, ExamSemester, MajorScore, SchoolYear, Score,
 };
 use interfacer_http::{
-    async_trait,
-    http::header::SET_COOKIE,
-    http::{response::Parts, Response},
-    HttpClient, ResponseExt, Unexpected,
+    async_trait, http::header::SET_COOKIE, http::Response, HttpClient, ResponseExt, Unexpected,
 };
 
 #[async_trait]
@@ -100,19 +97,39 @@ where
         semester: ExamSemester,
         cookie: &str,
     ) -> Result<Vec<Exam>, Self::Err> {
-        unimplemented!()
+        let school_year_str = school_year.to_string();
+        Ok(RawJWService::get_exams(
+            self,
+            stu_id,
+            ExamsReq::new(DEFAULT_EXAMS_VIEW_STATE, &school_year_str, &semester),
+            cookie,
+        )
+        .await?
+        .into_body()
+        .exams)
     }
     async fn get_scores(&self, stu_id: &str, cookie: &str) -> Result<Vec<Score>, Self::Err> {
-        unimplemented!()
+        Ok(
+            RawJWService::get_scores(self, stu_id, ScoresReq::new(SCORES_BASE_VIEW_STATE), cookie)
+                .await?
+                .into_body()
+                .scores,
+        )
     }
     async fn get_major_scores(
         &self,
         stu_id: &str,
         cookie: &str,
     ) -> Result<Vec<MajorScore>, Self::Err> {
-        unimplemented!()
+        Ok(RawJWService::get_major_scores(self, stu_id, cookie)
+            .await?
+            .into_body()
+            .scores)
     }
     async fn get_total_credit(&self, stu_id: &str, cookie: &str) -> Result<f32, Self::Err> {
-        unimplemented!()
+        Ok(RawJWService::get_total_credit(self, stu_id, cookie)
+            .await?
+            .into_body()
+            .credit)
     }
 }

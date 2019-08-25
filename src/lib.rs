@@ -7,10 +7,15 @@ pub mod helper;
 pub mod client;
 
 #[doc(inline)]
-pub use raw::resp::{Course, CourseIdentifier, CourseInfo, Exam, ExamTime, MajorScore, Score};
+pub use raw::resp::{
+    Course, CourseIdentifier, CourseInfo, Exam, ExamTime, MajorScore, ObjectMovedPage, Score,
+};
 
 #[doc(inline)]
 pub use req::{CourseSemester, ExamSemester, SchoolYear};
+
+#[doc(inline)]
+pub use service::JWService;
 
 mod raw;
 mod req;

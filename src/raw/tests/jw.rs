@@ -6,8 +6,7 @@ use crate::raw::req::{
 use crate::raw::resp::{CourseInfo, HiddenForm};
 use crate::raw::{RawJWService, JWB_COOKIE_NAME};
 use config::ConfigError;
-use interfacer_http::{cookie::Cookie, http::Response, Helper, ResponseExt};
-use interfacer_http_hyper::Client;
+use interfacer_http::{cookie::Cookie, ResponseExt};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
