@@ -1,6 +1,6 @@
 use crate::raw::{JWService, JWB_COOKIE_NAME};
 use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage, ExamsPage};
-use crate::raw::req::{LoginBody, CoursesReq, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE, COURSES_EVENT_TARGET, DEFAULT_EXAMS_VIEW_STATE};
+use crate::raw::req::{LoginBody, CoursesReq, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE, DEFAULT_EXAMS_VIEW_STATE};
 use config::ConfigError;
 use interfacer_http::{Helper, http::Response, ResponseExt, cookie::Cookie};
 use interfacer_http_hyper::Client;
@@ -116,7 +116,7 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
     let courses: CoursesPage = service.get_courses(
         &config.stu_id,
-        CoursesReq::new(COURSES_EVENT_TARGET, DEFAULT_COURSES_VIEW_STATE, "2018-2019", "1|秋、冬"),
+        CoursesReq::new(DEFAULT_COURSES_VIEW_STATE, "2018-2019", "1|秋、冬"),
         cookie_str,
     ).await?.into_body();
     assert!(courses.courses.len() > 0);
