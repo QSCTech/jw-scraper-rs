@@ -3,10 +3,7 @@ use crate::raw::req::{
     CoursesReq, ExamsReq, LoginBody, ScoresReq, DEFAULT_COURSES_VIEW_STATE,
     DEFAULT_EXAMS_VIEW_STATE, LOGIN_VIEW_STATE, SCORES_BASE_VIEW_STATE,
 };
-use crate::raw::resp::{
-    CourseInfo, CoursesPage, ExamsPage, HiddenForm, LoginPage, MajorScoresPage, ScoresBasePage,
-    ScoresPage, TotalCreditPage,
-};
+use crate::raw::resp::{CourseInfo, HiddenForm};
 use crate::raw::{RawJWService, JWB_COOKIE_NAME};
 use config::ConfigError;
 use interfacer_http::{cookie::Cookie, http::Response, Helper, ResponseExt};
@@ -34,7 +31,7 @@ impl Config {
 async fn test_login_page() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let login_page: Response<LoginPage> = service.get_login_page().await?;
+    let login_page = RawJWService::get_login_page(&service).await?;
     assert_eq!(
         &login_page.body().hidden_form,
         &HiddenForm {
@@ -58,7 +55,9 @@ async fn test_course_info() -> Result<(), Box<dyn std::error::Error>> {
         hours_per_week,
         prerequisite,
         intro,
-    } = service.get_course_info("021E0040").await?.into_body();
+    } = RawJWService::get_course_info(&service, "021E0040")
+        .await?
+        .into_body();
     assert_eq!("021E0040", &code);
     assert_eq!("马克思主义基本原理概论", &name);
     assert_eq!("马克思主义学院", &college);
@@ -76,13 +75,15 @@ async fn test_course_info() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
@@ -94,21 +95,22 @@ async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let courses: CoursesPage = service
-        .get_default_courses(&config.stu_id, cookie_str)
+    let courses = RawJWService::get_default_courses(&service, &config.stu_id, cookie_str)
         .await?
         .into_body();
     assert_eq!(DEFAULT_COURSES_VIEW_STATE, &courses.hidden_form.view_state);
@@ -120,27 +122,29 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let courses: CoursesPage = service
-        .get_courses(
-            &config.stu_id,
-            CoursesReq::new(DEFAULT_COURSES_VIEW_STATE, "2018-2019", "1|秋、冬"),
-            cookie_str,
-        )
-        .await?
-        .into_body();
+    let courses = RawJWService::get_courses(
+        &service,
+        &config.stu_id,
+        CoursesReq::new(DEFAULT_COURSES_VIEW_STATE, "2018-2019", "1|秋、冬"),
+        cookie_str,
+    )
+    .await?
+    .into_body();
     assert!(courses.courses.len() > 0);
     Ok(())
 }
@@ -149,21 +153,22 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let exams: ExamsPage = service
-        .get_default_exams(&config.stu_id, cookie_str)
+    let exams = RawJWService::get_default_exams(&service, &config.stu_id, cookie_str)
         .await?
         .into_body();
     assert_eq!(DEFAULT_EXAMS_VIEW_STATE, &exams.hidden_form.view_state);
@@ -175,27 +180,29 @@ async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_exams() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let exams: ExamsPage = service
-        .get_exams(
-            &config.stu_id,
-            ExamsReq::new(DEFAULT_EXAMS_VIEW_STATE, "2018-2019", "1|冬"),
-            cookie_str,
-        )
-        .await?
-        .into_body();
+    let exams = RawJWService::get_exams(
+        &service,
+        &config.stu_id,
+        ExamsReq::new(DEFAULT_EXAMS_VIEW_STATE, "2018-2019", "1|冬"),
+        cookie_str,
+    )
+    .await?
+    .into_body();
     assert!(exams.exams.len() > 0);
     Ok(())
 }
@@ -204,21 +211,22 @@ async fn test_exams() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_scores_base() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let scores_base: ScoresBasePage = service
-        .get_scores_base(&config.stu_id, cookie_str)
+    let scores_base = RawJWService::get_scores_base(&service, &config.stu_id, cookie_str)
         .await?
         .into_body();
     assert_eq!(SCORES_BASE_VIEW_STATE, &scores_base.hidden_form.view_state);
@@ -229,27 +237,29 @@ async fn test_scores_base() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_scores() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let scores: ScoresPage = service
-        .get_scores(
-            &config.stu_id,
-            ScoresReq::new(SCORES_BASE_VIEW_STATE),
-            cookie_str,
-        )
-        .await?
-        .into_body();
+    let scores = RawJWService::get_scores(
+        &service,
+        &config.stu_id,
+        ScoresReq::new(SCORES_BASE_VIEW_STATE),
+        cookie_str,
+    )
+    .await?
+    .into_body();
     assert!(scores.scores.len() > 0);
     Ok(())
 }
@@ -258,21 +268,22 @@ async fn test_scores() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_major_scores() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let major_scores: MajorScoresPage = service
-        .get_major_scores(&config.stu_id, cookie_str)
+    let major_scores = RawJWService::get_major_scores(&service, &config.stu_id, cookie_str)
         .await?
         .into_body();
     assert!(major_scores.scores.len() > 0);
@@ -283,21 +294,22 @@ async fn test_major_scores() -> Result<(), Box<dyn std::error::Error>> {
 async fn test_total_credit() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
     let service = client(config.jwb_base_url.parse()?);
-    let resp: Response<()> = service
-        .login(LoginBody::new(
+    let resp = RawJWService::login(
+        &service,
+        LoginBody::new(
             LOGIN_VIEW_STATE,
             config.stu_id.as_str(),
             config.password.as_str(),
-        ))
-        .await?;
+        ),
+    )
+    .await?;
     let cookies = resp.cookie_map()?;
     let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let _: TotalCreditPage = service
-        .get_total_credit(&config.stu_id, cookie_str)
+    let _ = RawJWService::get_total_credit(&service, &config.stu_id, cookie_str)
         .await?
         .into_body();
     Ok(())

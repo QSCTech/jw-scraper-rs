@@ -6,7 +6,7 @@ use crate::raw::{RawJWService, JWB_COOKIE_NAME};
 use crate::{
     Course, CourseInfo, CourseSemester, Exam, ExamSemester, MajorScore, SchoolYear, Score,
 };
-use interfacer_http::{async_trait, cookie::Cookie, HttpClient};
+use interfacer_http::{async_trait, cookie::Cookie, HttpClient, ResponseExt};
 
 #[async_trait]
 pub trait JWService {
@@ -45,8 +45,7 @@ where
 
     async fn login(&self, stu_id: &str, password: &str) -> Result<String, Self::Err> {
         let resp =
-            <Self as RawJWService>::login(self, LoginBody::new(LOGIN_VIEW_STATE, stu_id, password))
-                .await?;
+            RawJWService::login(self, LoginBody::new(LOGIN_VIEW_STATE, stu_id, password)).await?;
         unimplemented!()
     }
     async fn get_course_info(&self, code: &str) -> Result<CourseInfo, Self::Err> {
