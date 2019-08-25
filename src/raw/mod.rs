@@ -4,18 +4,16 @@ pub mod resp;
 #[cfg(all(test, feature = "test"))]
 mod tests;
 
-use interfacer_http::{
-    http::header::COOKIE, http::Response,
-    http_service,
-};
+use interfacer_http::{http::header::COOKIE, http::Response, http_service};
 use req::{CoursesReq, ExamsReq, LoginBody, ScoresReq};
 use resp::{
     CourseInfo, CoursesPage, ExamsPage, LoginPage, MajorScoresPage, ScoresBasePage, ScoresPage,
     TotalCreditPage,
 };
 
-const JWB_COOKIE_NAME: &str = "ASP.NET_SessionId";
+pub const JWB_COOKIE_NAME: &str = "ASP.NET_SessionId";
 
+#[rustfmt::skip]
 #[http_service]
 pub trait RawJWService {
     type Err;

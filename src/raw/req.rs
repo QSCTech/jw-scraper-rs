@@ -108,11 +108,7 @@ impl<'a> LoginBody<'a> {
 }
 
 impl<'a> CoursesReq<'a> {
-    pub fn new(
-        view_state: &'a str,
-        school_year: &'a str,
-        semester: &'a str,
-    ) -> Self {
+    pub fn new(view_state: &'a str, school_year: &'a str, semester: &'a str) -> Self {
         Self {
             event_target: "",
             event_argument: "",
@@ -126,11 +122,7 @@ impl<'a> CoursesReq<'a> {
 }
 
 impl<'a> ExamsReq<'a> {
-    pub fn new(
-        view_state: &'a str,
-        school_year: &'a str,
-        semester: &'a str,
-    ) -> Self {
+    pub fn new(view_state: &'a str, school_year: &'a str, semester: &'a str) -> Self {
         Self {
             event_target: "",
             event_argument: "",
@@ -157,9 +149,7 @@ impl<'a> ScoresReq<'a> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use interfacer_http::{
-        ToContent,
-    };
+    use interfacer_http::ToContent;
 
     #[test]
     fn login_body() {
@@ -169,7 +159,11 @@ mod tests {
             "123456",
         );
         let data: Vec<u8> = body
-            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
+            .to_content(
+                &"application/x-www-form-urlencoded; charset=gb2312"
+                    .parse()
+                    .unwrap(),
+            )
             .unwrap();
 
         assert_eq!(
@@ -186,7 +180,11 @@ mod tests {
             "1|秋、冬",
         );
         let data: Vec<u8> = req
-            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
+            .to_content(
+                &"application/x-www-form-urlencoded; charset=gb2312"
+                    .parse()
+                    .unwrap(),
+            )
             .unwrap();
 
         assert_eq!(
@@ -203,7 +201,11 @@ mod tests {
             "2|春",
         );
         let data: Vec<u8> = req
-            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
+            .to_content(
+                &"application/x-www-form-urlencoded; charset=gb2312"
+                    .parse()
+                    .unwrap(),
+            )
             .unwrap();
 
         assert_eq!(
@@ -216,7 +218,11 @@ mod tests {
     fn scores_req() {
         let req = ScoresReq::new("dDwxNTc0MzA5MTU4Ozs+b5wKASjiu+fSjITNzcKuKXEUyXg=");
         let data: Vec<u8> = req
-            .to_content(&"application/x-www-form-urlencoded; charset=gb2312".parse().unwrap())
+            .to_content(
+                &"application/x-www-form-urlencoded; charset=gb2312"
+                    .parse()
+                    .unwrap(),
+            )
             .unwrap();
 
         assert_eq!(

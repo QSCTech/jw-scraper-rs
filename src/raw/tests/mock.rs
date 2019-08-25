@@ -1,10 +1,18 @@
 const BASE_URL: &str = "http://jwbinfosys.zju.edu.cn";
 
-use interfacer_http::{ async_trait, http::{header::CONTENT_TYPE, Request, Response, Version}, url::Url, HttpClient, Helper};
+use interfacer_http::{
+    async_trait,
+    http::{header::CONTENT_TYPE, Request, Response, Version},
+    url::Url,
+    Helper, HttpClient,
+};
 
-use interfacer_http_hyper::{Result, Error};
+use interfacer_http_hyper::{Error, Result};
 
-use crate::raw::{resp::{HiddenForm, tests::LOGIN_PAGE}, RawJWService};
+use crate::raw::{
+    resp::{tests::LOGIN_PAGE, HiddenForm},
+    RawJWService,
+};
 use encoding::label::encoding_from_whatwg_label;
 use encoding::EncoderTrap;
 use tokio::prelude::*;
@@ -21,8 +29,7 @@ where
     pub fn new(base_url: Url, handler: fn(Request<Vec<u8>>) -> F) -> Self {
         Self {
             handler,
-            helper: Helper::new()
-                .with_base_url(base_url)
+            helper: Helper::new().with_base_url(base_url),
         }
     }
 }
@@ -30,7 +37,7 @@ where
 #[async_trait]
 impl<F> HttpClient for Client<F>
 where
-    F: Future<Output = Result<Response<Vec<u8>>>> + Send + 'static
+    F: Future<Output = Result<Response<Vec<u8>>>> + Send + 'static,
 {
     type Err = Error;
     async fn request(&self, req: Request<Vec<u8>>) -> Result<Response<Vec<u8>>> {
@@ -47,10 +54,7 @@ async fn login_page_handler(req: Request<Vec<u8>>) -> Result<Response<Vec<u8>>> 
         Url::parse(BASE_URL)?.join("default2.aspx")?.as_str(),
         req.uri()
     );
-    assert_eq!(
-        "GET",
-        req.method()
-    );
+    assert_eq!("GET", req.method());
     Ok(Response::builder()
         .status(200)
         .version(Version::HTTP_11)
@@ -60,8 +64,7 @@ async fn login_page_handler(req: Request<Vec<u8>>) -> Result<Response<Vec<u8>>> 
                 .unwrap()
                 .encode(LOGIN_PAGE, EncoderTrap::Strict)
                 .unwrap(),
-        )?
-    )
+        )?)
 }
 
 #[tokio::test]

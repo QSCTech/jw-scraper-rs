@@ -7,5 +7,11 @@ pub mod helper;
 pub mod client;
 
 #[doc(inline)]
-pub use raw::resp::{Course, CourseIdentifier, CourseInfo, Exam, ExamTime, Score, MajorScore};
+pub use raw::resp::{Course, CourseIdentifier, CourseInfo, Exam, ExamTime, MajorScore, Score};
+
+#[doc(inline)]
+pub use req::{CourseSemester, ExamSemester, SchoolYear};
+
 mod raw;
+mod req;
+mod service;
