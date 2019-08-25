@@ -23,7 +23,6 @@ where
             handler,
             helper: Helper::new()
                 .with_base_url(base_url)
-                .with_request_initializer(crate::helper::request_initializer),
         }
     }
 }

@@ -30,7 +30,6 @@ async fn test_login_page() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let login_page: Response<LoginPage> = service.get_login_page().await?;
     assert_eq!(
@@ -50,7 +49,6 @@ async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -72,7 +70,6 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -99,7 +96,6 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -129,7 +125,6 @@ async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -156,7 +151,6 @@ async fn test_exams() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -186,7 +180,6 @@ async fn test_scores_base() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -212,7 +205,6 @@ async fn test_scores() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -242,7 +234,6 @@ async fn test_major_scores() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
@@ -268,7 +259,6 @@ async fn test_total_credit() -> Result<(), Box<dyn std::error::Error>> {
     let service = Client::new().with_helper(
         Helper::new()
             .with_base_url(config.jwb_base_url.parse()?)
-            .with_request_initializer(crate::helper::request_initializer)
     );
     let resp: Response<()> = service.login(
         LoginBody::new(
