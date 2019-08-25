@@ -14,6 +14,8 @@ use resp::{
     TotalCreditPage,
 };
 
+const JWB_COOKIE_NAME: &str = "ASP.NET_SessionId";
+
 #[http_service]
 pub trait JWService {
     type Err;

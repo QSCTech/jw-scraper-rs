@@ -1,4 +1,4 @@
-use crate::raw::JWService;
+use crate::raw::{JWService, JWB_COOKIE_NAME};
 use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage};
 use crate::raw::req::{LoginBody, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE};
 use config::ConfigError;
@@ -60,7 +60,7 @@ async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
         )
     ).await?;
     let cookies = resp.cookie_map()?;
-    let cookie = cookies.get("ASP.NET_SessionId");
+    let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     Ok(())
@@ -82,7 +82,7 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
         )
     ).await?;
     let cookies = resp.cookie_map()?;
-    let cookie = cookies.get("ASP.NET_SessionId");
+    let cookie = cookies.get(JWB_COOKIE_NAME);
     assert!(cookie.is_some());
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
