@@ -17,7 +17,7 @@ use resp::{
 const JWB_COOKIE_NAME: &str = "ASP.NET_SessionId";
 
 #[http_service]
-pub trait JWService {
+pub trait RawJWService {
     type Err;
 
     #[get("default2.aspx")]

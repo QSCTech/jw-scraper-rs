@@ -4,7 +4,7 @@ use interfacer_http::{ async_trait, http::{header::CONTENT_TYPE, Request, Respon
 
 use interfacer_http_hyper::{Result, Error};
 
-use crate::raw::{resp::{HiddenForm, tests::LOGIN_PAGE}, JWService};
+use crate::raw::{resp::{HiddenForm, tests::LOGIN_PAGE}, RawJWService};
 use encoding::label::encoding_from_whatwg_label;
 use encoding::EncoderTrap;
 use tokio::prelude::*;

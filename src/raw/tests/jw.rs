@@ -1,4 +1,4 @@
-use crate::raw::{JWService, JWB_COOKIE_NAME};
+use crate::raw::{RawJWService, JWB_COOKIE_NAME};
 use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage, ExamsPage, ScoresBasePage, ScoresPage, MajorScoresPage, TotalCreditPage};
 use crate::raw::req::{LoginBody, CoursesReq, ExamsReq, ScoresReq, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE, DEFAULT_EXAMS_VIEW_STATE, SCORES_BASE_VIEW_STATE};
 use config::ConfigError;
