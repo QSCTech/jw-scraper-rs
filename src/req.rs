@@ -27,6 +27,12 @@ impl Display for SchoolYear {
     }
 }
 
+impl From<u16> for SchoolYear {
+    fn from(value: u16) -> Self {
+        SchoolYear(value)
+    }
+}
+
 use CourseSemester::*;
 impl Deref for CourseSemester {
     type Target = str;
