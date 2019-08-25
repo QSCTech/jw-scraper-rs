@@ -1,6 +1,6 @@
 use crate::raw::{JWService, JWB_COOKIE_NAME};
-use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage};
-use crate::raw::req::{LoginBody, CoursesReq, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE, COURSES_EVENT_TARGET};
+use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage, ExamsPage};
+use crate::raw::req::{LoginBody, CoursesReq, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE, COURSES_EVENT_TARGET, DEFAULT_EXAMS_VIEW_STATE};
 use config::ConfigError;
 use interfacer_http::{Helper, http::Response, ResponseExt, cookie::Cookie};
 use interfacer_http_hyper::Client;
@@ -120,5 +120,32 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
         cookie_str,
     ).await?.into_body();
     assert!(courses.courses.len() > 0);
+    Ok(())
+}
+
+#[tokio::test]
+async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
+    let config = Config::parse()?;
+    let service = Client::new().with_helper(
+        Helper::new()
+            .with_base_url(config.jwb_base_url.parse()?)
+            .with_request_initializer(crate::helper::request_initializer)
+    );
+    let resp: Response<()> = service.login(
+        LoginBody::new(
+            LOGIN_VIEW_STATE,
+            config.stu_id.as_str(),
+            config.password.as_str(),
+        )
+    ).await?;
+    let cookies = resp.cookie_map()?;
+    let cookie = cookies.get(JWB_COOKIE_NAME);
+    assert!(cookie.is_some());
+    assert_eq!(1, cookie.unwrap().len());
+    let (name, value) = cookie.unwrap()[0].name_value();
+    let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
+    let exams: ExamsPage = service.get_default_exams(&config.stu_id, cookie_str).await?.into_body();
+    assert_eq!(DEFAULT_EXAMS_VIEW_STATE, &exams.hidden_form.view_state);
+    assert!(exams.exams.len() > 0);
     Ok(())
 }
