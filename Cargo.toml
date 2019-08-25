@@ -28,3 +28,4 @@ travis-ci = { repository = "QSCTech/jw-scraper", branch = "master" }
 
 [features]
 test = ["interfacer-http-hyper", "config", "tokio", "encoding"]
+client = ["interfacer-http-hyper"]

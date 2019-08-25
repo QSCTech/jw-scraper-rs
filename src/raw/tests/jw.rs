@@ -1,6 +1,7 @@
 use crate::raw::{RawJWService, JWB_COOKIE_NAME};
-use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage, ExamsPage, ScoresBasePage, ScoresPage, MajorScoresPage, TotalCreditPage};
+use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage, ExamsPage, ScoresBasePage, ScoresPage, MajorScoresPage, TotalCreditPage, CourseInfo};
 use crate::raw::req::{LoginBody, CoursesReq, ExamsReq, ScoresReq, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE, DEFAULT_EXAMS_VIEW_STATE, SCORES_BASE_VIEW_STATE};
+use crate::client::client;
 use config::ConfigError;
 use interfacer_http::{Helper, http::Response, ResponseExt, cookie::Cookie};
 use interfacer_http_hyper::Client;
@@ -27,10 +28,7 @@ impl Config {
 #[tokio::test]
 async fn test_login_page() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let login_page: Response<LoginPage> = service.get_login_page().await?;
     assert_eq!(
         &login_page.body().hidden_form,
@@ -44,12 +42,27 @@ async fn test_login_page() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[tokio::test]
+async fn test_course_info() -> Result<(), Box<dyn std::error::Error>> {
+    let config = Config::parse()?;
+    let service = client(config.jwb_base_url.parse()?);
+    let CourseInfo { code, name, college, credit, hours_per_week, prerequisite, intro} = service.get_course_info("021E0040").await?.into_body();
+    assert_eq!("021E0040", &code);
+    assert_eq!("马克思主义基本原理概论", &name);
+    assert_eq!("马克思主义学院", &college);
+    assert_eq!(2.5, credit);
+    assert_eq!("2.0-1.0", &hours_per_week);
+    assert_eq!("", &prerequisite);
+    assert_eq!(
+        "本课程旨在帮助学生从整体上把握马克思主义基本理论，从而把握人类社会发展的基本规律，以确立正确的世界观和人生观。教学内容主要有：物质世界及其发展规律；认识世界和改造世界的规律；人类社会及其发展规律；资本主义和社会主义发展规律；共产主义与人的自由全面发展规律。"
+        , &intro
+    );
+    Ok(())
+}
+
+#[tokio::test]
 async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -67,10 +80,7 @@ async fn test_login() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -93,10 +103,7 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -122,10 +129,7 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -148,10 +152,7 @@ async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_exams() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -177,10 +178,7 @@ async fn test_exams() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_scores_base() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -202,10 +200,7 @@ async fn test_scores_base() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_scores() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -231,10 +226,7 @@ async fn test_scores() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_major_scores() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
@@ -256,10 +248,7 @@ async fn test_major_scores() -> Result<(), Box<dyn std::error::Error>> {
 #[tokio::test]
 async fn test_total_credit() -> Result<(), Box<dyn std::error::Error>> {
     let config = Config::parse()?;
-    let service = Client::new().with_helper(
-        Helper::new()
-            .with_base_url(config.jwb_base_url.parse()?)
-    );
+    let service = client(config.jwb_base_url.parse()?);
     let resp: Response<()> = service.login(
         LoginBody::new(
             LOGIN_VIEW_STATE,
