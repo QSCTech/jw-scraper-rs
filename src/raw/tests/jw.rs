@@ -1,10 +1,11 @@
-use crate::JWService;
+use crate::raw::JWService;
+use crate::raw::resp::{LoginPage, HiddenForm, CoursesPage};
+use crate::raw::req::{LoginBody, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE};
 use config::ConfigError;
 use interfacer_http::{Helper, http::Response, ResponseExt, cookie::Cookie};
 use interfacer_http_hyper::Client;
 use serde::{Deserialize, Serialize};
-use crate::resp::{LoginPage, HiddenForm, CoursesPage};
-use crate::req::{LoginBody, LOGIN_VIEW_STATE, DEFAULT_COURSES_VIEW_STATE};
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
