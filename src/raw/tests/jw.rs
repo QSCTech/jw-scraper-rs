@@ -205,3 +205,33 @@ async fn test_scores_base() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(SCORES_BASE_VIEW_STATE, &scores_base.hidden_form.view_state);
     Ok(())
 }
+
+#[tokio::test]
+async fn test_scores() -> Result<(), Box<dyn std::error::Error>> {
+    let config = Config::parse()?;
+    let service = Client::new().with_helper(
+        Helper::new()
+            .with_base_url(config.jwb_base_url.parse()?)
+            .with_request_initializer(crate::helper::request_initializer)
+    );
+    let resp: Response<()> = service.login(
+        LoginBody::new(
+            LOGIN_VIEW_STATE,
+            config.stu_id.as_str(),
+            config.password.as_str(),
+        )
+    ).await?;
+    let cookies = resp.cookie_map()?;
+    let cookie = cookies.get(JWB_COOKIE_NAME);
+    assert!(cookie.is_some());
+    assert_eq!(1, cookie.unwrap().len());
+    let (name, value) = cookie.unwrap()[0].name_value();
+    let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
+    let scores: ScoresPage = service.get_scores(
+        &config.stu_id,
+        ScoresReq::new(SCORES_BASE_VIEW_STATE),
+        cookie_str,
+    ).await?.into_body();
+    assert!(scores.scores.len() > 0);
+    Ok(())
+}
