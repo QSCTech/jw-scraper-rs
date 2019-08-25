@@ -35,7 +35,7 @@ pub trait RawJWService {
     async fn get_default_courses(
         &self,
         stu_id: &str,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<CoursesPage>, Self::Err>;
 
     #[post("xskbcx.aspx?xh={stu_id}", "application/x-www-form-urlencoded; charset=gb2312")]
@@ -44,7 +44,7 @@ pub trait RawJWService {
         &self,
         stu_id: &str,
         #[body] body: CoursesReq<'a>,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<CoursesPage>, Self::Err>;
 
     #[get("xskscx.aspx?xh={stu_id}")]
@@ -52,7 +52,7 @@ pub trait RawJWService {
     async fn get_default_exams(
         &self,
         stu_id: &str,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<ExamsPage>, Self::Err>;
 
     #[post("xskscx.aspx?xh={stu_id}", "application/x-www-form-urlencoded; charset=gb2312")]
@@ -61,7 +61,7 @@ pub trait RawJWService {
         &self,
         stu_id: &str,
         #[body] body: ExamsReq<'a>,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<ExamsPage>, Self::Err>;
 
     #[get("xscj.aspx?xh={stu_id}")]
@@ -69,7 +69,7 @@ pub trait RawJWService {
     async fn get_scores_base(
         &self,
         stu_id: &str,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<ScoresBasePage>, Self::Err>;
 
     #[post("xscj.aspx?xh={stu_id}", "application/x-www-form-urlencoded; charset=gb2312")]
@@ -78,7 +78,7 @@ pub trait RawJWService {
         &self,
         stu_id: &str,
         #[body] body: ScoresReq<'a>,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<ScoresPage>, Self::Err>;
 
     #[get("xscj_zg.aspx?xh={stu_id}")]
@@ -86,7 +86,7 @@ pub trait RawJWService {
     async fn get_major_scores(
         &self,
         stu_id: &str,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<MajorScoresPage>, Self::Err>;
 
     #[get("xs_txsqddy.aspx?xh={stu_id}")]
@@ -94,6 +94,6 @@ pub trait RawJWService {
     async fn get_total_credit(
         &self,
         stu_id: &str,
-        #[header(COOKIE)] cookie: String,
+        #[header(COOKIE)] cookie: &str,
     ) -> Result<Response<TotalCreditPage>, Self::Err>;
 }

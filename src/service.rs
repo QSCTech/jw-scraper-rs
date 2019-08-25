@@ -73,7 +73,7 @@ where
         }
     }
     async fn get_course_info(&self, code: &str) -> Result<CourseInfo, Self::Err> {
-        unimplemented!()
+        Ok(RawJWService::get_course_info(self, code).await?.into_body())
     }
     async fn get_course(
         &self,
@@ -82,7 +82,16 @@ where
         semester: CourseSemester,
         cookie: &str,
     ) -> Result<Vec<Course>, Self::Err> {
-        unimplemented!()
+        let school_year_str = school_year.to_string();
+        Ok(RawJWService::get_courses(
+            self,
+            stu_id,
+            CoursesReq::new(DEFAULT_COURSES_VIEW_STATE, &school_year_str, &semester),
+            cookie,
+        )
+        .await?
+        .into_body()
+        .courses)
     }
     async fn get_exams(
         &self,

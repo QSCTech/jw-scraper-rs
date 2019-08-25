@@ -110,7 +110,7 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let courses = RawJWService::get_default_courses(&service, &config.stu_id, cookie_str)
+    let courses = RawJWService::get_default_courses(&service, &config.stu_id, &cookie_str)
         .await?
         .into_body();
     assert_eq!(DEFAULT_COURSES_VIEW_STATE, &courses.hidden_form.view_state);
@@ -141,7 +141,7 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
         &service,
         &config.stu_id,
         CoursesReq::new(DEFAULT_COURSES_VIEW_STATE, "2018-2019", "1|秋、冬"),
-        cookie_str,
+        &cookie_str,
     )
     .await?
     .into_body();
@@ -168,7 +168,7 @@ async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let exams = RawJWService::get_default_exams(&service, &config.stu_id, cookie_str)
+    let exams = RawJWService::get_default_exams(&service, &config.stu_id, &cookie_str)
         .await?
         .into_body();
     assert_eq!(DEFAULT_EXAMS_VIEW_STATE, &exams.hidden_form.view_state);
@@ -199,7 +199,7 @@ async fn test_exams() -> Result<(), Box<dyn std::error::Error>> {
         &service,
         &config.stu_id,
         ExamsReq::new(DEFAULT_EXAMS_VIEW_STATE, "2018-2019", "1|冬"),
-        cookie_str,
+        &cookie_str,
     )
     .await?
     .into_body();
@@ -226,7 +226,7 @@ async fn test_scores_base() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let scores_base = RawJWService::get_scores_base(&service, &config.stu_id, cookie_str)
+    let scores_base = RawJWService::get_scores_base(&service, &config.stu_id, &cookie_str)
         .await?
         .into_body();
     assert_eq!(SCORES_BASE_VIEW_STATE, &scores_base.hidden_form.view_state);
@@ -256,7 +256,7 @@ async fn test_scores() -> Result<(), Box<dyn std::error::Error>> {
         &service,
         &config.stu_id,
         ScoresReq::new(SCORES_BASE_VIEW_STATE),
-        cookie_str,
+        &cookie_str,
     )
     .await?
     .into_body();
@@ -283,7 +283,7 @@ async fn test_major_scores() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let major_scores = RawJWService::get_major_scores(&service, &config.stu_id, cookie_str)
+    let major_scores = RawJWService::get_major_scores(&service, &config.stu_id, &cookie_str)
         .await?
         .into_body();
     assert!(major_scores.scores.len() > 0);
@@ -309,7 +309,7 @@ async fn test_total_credit() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
-    let _ = RawJWService::get_total_credit(&service, &config.stu_id, cookie_str)
+    let _ = RawJWService::get_total_credit(&service, &config.stu_id, &cookie_str)
         .await?
         .into_body();
     Ok(())
