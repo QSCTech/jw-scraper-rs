@@ -1,4 +1,3 @@
-use interfacer_http::ToContent;
 use serde::{Deserialize, Serialize};
 
 pub const LOGIN_VIEW_STATE: &str = "dDwxNTc0MzA5MTU4Ozs+b5wKASjiu+fSjITNzcKuKXEUyXg=";
@@ -6,7 +5,7 @@ pub const DEFAULT_COURSES_VIEW_STATE: &str = "dDwtMjQ5Nzk5MzUyO3Q8O2w8aTwwPjs+O2
 pub const DEFAULT_EXAMS_VIEW_STATE: &str = "dDwxNTk1Njg3ODE4O3Q8O2w8aTwxPjs+O2w8dDw7bDxpPDE+O2k8NT47PjtsPHQ8dDxwPHA8bDxEYXRhVGV4dEZpZWxkO0RhdGFWYWx1ZUZpZWxkOz47bDx4bjt4bjs+Pjs+O3Q8aTwzPjtAPDIwMTgtMjAxOTsyMDE3LTIwMTg7MjAxNi0yMDE3Oz47QDwyMDE4LTIwMTk7MjAxNy0yMDE4OzIwMTYtMjAxNzs+PjtsPGk8MD47Pj47Oz47dDx0PHA8cDxsPERhdGFUZXh0RmllbGQ7RGF0YVZhbHVlRmllbGQ7PjtsPHh4cTt4cTE7Pj47Pjt0PGk8Nz47QDzmmKU75aSPO+efrTvnp4s75YasO+efrTvmmpE7PjtAPDJ85pilOzJ85aSPOzJ855+tOzF856eLOzF85YasOzF855+tOzF85pqROz4+O2w8aTwwPjs+Pjs7Pjs+Pjs+Pjs+OCzbPClMQn2a0gVUtI8dCTWFDFY=";
 pub const SCORES_BASE_VIEW_STATE: &str = "dDw0NzAzMzE4ODg7dDw7bDxpPDE+Oz47bDx0PDtsPGk8Mj47aTw1PjtpPDI1PjtpPDI3PjtpPDQxPjtpPDQzPjtpPDQ1PjtpPDQ3Pjs+O2w8dDx0PDt0PGk8MjA+O0A8XGU7MjAwMS0yMDAyOzIwMDItMjAwMzsyMDAzLTIwMDQ7MjAwNC0yMDA1OzIwMDUtMjAwNjsyMDA2LTIwMDc7MjAwNy0yMDA4OzIwMDgtMjAwOTsyMDA5LTIwMTA7MjAxMC0yMDExOzIwMTEtMjAxMjsyMDEyLTIwMTM7MjAxMy0yMDE0OzIwMTQtMjAxNTsyMDE1LTIwMTY7MjAxNi0yMDE3OzIwMTctMjAxODsyMDE4LTIwMTk7MjAxOS0yMDIwOz47QDxcZTsyMDAxLTIwMDI7MjAwMi0yMDAzOzIwMDMtMjAwNDsyMDA0LTIwMDU7MjAwNS0yMDA2OzIwMDYtMjAwNzsyMDA3LTIwMDg7MjAwOC0yMDA5OzIwMDktMjAxMDsyMDEwLTIwMTE7MjAxMS0yMDEyOzIwMTItMjAxMzsyMDEzLTIwMTQ7MjAxNC0yMDE1OzIwMTUtMjAxNjsyMDE2LTIwMTc7MjAxNy0yMDE4OzIwMTgtMjAxOTsyMDE5LTIwMjA7Pj47Pjs7Pjt0PHQ8cDxwPGw8RGF0YVRleHRGaWVsZDtEYXRhVmFsdWVGaWVsZDs+O2w8eHhxO3hxMTs+Pjs+O3Q8aTw4PjtAPFxlO+enizvlhqw755+tO+aakTvmmKU75aSPO+efrTs+O0A8XGU7MXznp4s7MXzlhqw7MXznn607MXzmmpE7MnzmmKU7MnzlpI87Mnznn607Pj47Pjs7Pjt0PHA8O3A8bDxvbmNsaWNrOz47bDx3aW5kb3cucHJpbnQoKVw7Oz4+Pjs7Pjt0PHA8O3A8bDxvbmNsaWNrOz47bDx3aW5kb3cuY2xvc2UoKVw7Oz4+Pjs7Pjt0PEAwPDs7Ozs7Ozs7Ozs+Ozs+O3Q8QDA8Ozs7Ozs7Ozs7Oz47Oz47dDxAMDw7Ozs7Ozs7Ozs7Pjs7Pjt0PHA8cDxsPFRleHQ7PjtsPFpKRFg7Pj47Pjs7Pjs+Pjs+Pjs+tl+z/1VkE46nfFcml4xayCv/3rw=";
 
-#[derive(Serialize, Deserialize, ToContent, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct LoginBody<'a> {
     #[serde(rename = "__EVENTTARGET")]
     event_target: &'a str,
@@ -30,7 +29,7 @@ pub struct LoginBody<'a> {
     text1: &'a str,
 }
 
-#[derive(Serialize, Deserialize, ToContent, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct CoursesReq<'a> {
     #[serde(rename = "__EVENTTARGET")]
     event_target: &'a str,
@@ -54,7 +53,7 @@ pub struct CoursesReq<'a> {
     course_into: &'a str,
 }
 
-#[derive(Serialize, Deserialize, ToContent, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct ExamsReq<'a> {
     #[serde(rename = "__EVENTTARGET")]
     event_target: &'a str,
@@ -72,7 +71,7 @@ pub struct ExamsReq<'a> {
     semester: &'a str,
 }
 
-#[derive(Serialize, Deserialize, ToContent, Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct ScoresReq<'a> {
     #[serde(rename = "__VIEWSTATE")]
     view_state: &'a str,
