@@ -24,7 +24,6 @@ before_script:
 script: # 集成脚本
 - travis-cargo build --all --all-features
 - travis-cargo test --all --all-features
-- goveralls -coverprofile=go.coverprofile -service=travis-ci -repotoken=$COVERALLS_TOKEN
 
 after_success:
   # measure code coverage and upload to coveralls.io (the verify
