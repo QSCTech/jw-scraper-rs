@@ -1,5 +1,24 @@
-use crate::raw::tests::Config;
 use crate::{client::client, CourseInfo, CourseSemester::*, ExamSemester::*, JWService};
+use config::ConfigError;
+use serde::{Deserialize, Serialize};
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Config {
+    pub stu_id: String,
+    pub password: String,
+    pub jwb_base_url: String,
+    pub https_jwb_base_url: String,
+}
+
+impl Config {
+    pub fn parse() -> Result<Self, ConfigError> {
+        let mut settings = config::Config::default();
+        settings
+            .merge(config::File::with_name("test-settings").required(false))?
+            .merge(config::Environment::with_prefix("TEST"))?;
+        settings.try_into::<Self>()
+    }
+}
 
 #[tokio::test]
 async fn test_login() -> Result<(), Box<dyn std::error::Error>> {

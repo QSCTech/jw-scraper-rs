@@ -3,7 +3,7 @@
 pub mod req;
 pub mod resp;
 
-#[cfg(test)]
+#[cfg(all(test, feature = "client"))]
 pub mod tests;
 
 use interfacer_http::{http::header::COOKIE, http::Response, http_service};

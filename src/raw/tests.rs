@@ -3,27 +3,8 @@ use super::req::{
 };
 use super::resp::{CourseInfo, HiddenForm};
 use super::{RawJWService, JWB_COOKIE_NAME};
-use crate::client::client;
-use config::ConfigError;
+use crate::{client, tests::Config};
 use interfacer_http::{cookie::Cookie, ResponseExt};
-use serde::{Deserialize, Serialize};
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Config {
-    pub stu_id: String,
-    pub password: String,
-    pub jwb_base_url: String,
-}
-
-impl Config {
-    pub fn parse() -> Result<Self, ConfigError> {
-        let mut settings = config::Config::default();
-        settings
-            .merge(config::File::with_name("test-settings").required(false))?
-            .merge(config::Environment::with_prefix("TEST"))?;
-        settings.try_into::<Self>()
-    }
-}
 
 #[tokio::test]
 async fn test_login_page() -> Result<(), Box<dyn std::error::Error>> {
