@@ -4,7 +4,7 @@
 pub mod helper;
 
 #[cfg(any(feature = "client", feature = "test"))]
-pub mod client;
+pub use client::{client, Client, Helper};
 
 #[doc(inline)]
 pub use raw::resp::{
@@ -20,6 +20,9 @@ pub use service::JWService;
 mod raw;
 mod req;
 mod service;
+
+#[cfg(any(feature = "client", feature = "test"))]
+mod client;
 
 #[cfg(all(test, feature = "test"))]
 mod tests;
