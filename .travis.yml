@@ -1,4 +1,10 @@
+sudo: required
 language: rust
+
+# Cache cargo symbols for faster build
+cache: cargo
+
+# Dependencies of kcov, used by coverage
 addons:
   apt:
     packages:
@@ -6,30 +12,32 @@ addons:
       - libelf-dev
       - libdw-dev
       - binutils-dev
+      - cmake # also required for cargo-update
+    sources:
+      - kalakris-cmake
+
 rust:
-- stable
-- beta
-- nightly
+  - stable
+  - beta
+  - nightly
+
 matrix:
   allow_failures:
-  - rust: stable
-  - rust: beta
+    - rust: stable
+    - rust: beta
 
-# load travis-cargo
 before_script:
-  - |
-      pip install 'travis-cargo<0.2' --user &&
-      export PATH=$HOME/.local/bin:$PATH
+  - export PATH=$HOME/.cargo/bin:$PATH
+  - cargo install cargo-update || echo "cargo-update already installed"
+  - cargo install cargo-travis || echo "cargo-travis already installed"
+  - cargo install-update -a # update outdated cached binaries
 
 script: # 集成脚本
-- cargo build --all --all-features
-- cargo test --all --all-features
+  - cargo build --all --all-features
+  - cargo test --all --all-features
 
 after_success:
-  # measure code coverage and upload to coveralls.io (the verify
-  # argument mitigates kcov crashes due to malformed debuginfo, at the
-  # cost of some speed <https://github.com/huonw/travis-cargo/issues/12>)
-  - travis-cargo coveralls --no-sudo --verify
+  - cargo coveralls --all --all-features
 
 env:
   global:
