@@ -22,8 +22,8 @@ before_script:
       export PATH=$HOME/.local/bin:$PATH
 
 script: # 集成脚本
-- travis-cargo build --all --all-features
-- travis-cargo test --all --all-features
+- cargo build --all --all-features
+- cargo test --all --all-features
 
 after_success:
   # measure code coverage and upload to coveralls.io (the verify
