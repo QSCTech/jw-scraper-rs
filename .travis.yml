@@ -37,7 +37,7 @@ script: # 集成脚本
   - cargo test --all --all-features
 
 after_success:
-  - cargo coveralls --all --all-features
+  - cargo coveralls --all --all-features --exclude-pattern target/
 
 env:
   global:
