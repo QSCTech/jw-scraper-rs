@@ -42,7 +42,7 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
     let service = client(config.jwb_base_url.parse()?);
     let cookie = service.login(&config.stu_id, &config.password).await?;
     let courses = service
-        .get_course(&config.stu_id, 2017.into(), FallAndWinter, &cookie)
+        .get_courses(&config.stu_id, 2017.into(), FallAndWinter, &cookie)
         .await?;
     assert!(!courses.is_empty());
     Ok(())

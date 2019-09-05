@@ -14,7 +14,7 @@ pub trait JWService {
     type Err;
     async fn login(&self, stu_id: &str, password: &str) -> Result<String, Self::Err>;
     async fn get_course_info(&self, code: &str) -> Result<CourseInfo, Self::Err>;
-    async fn get_course(
+    async fn get_courses(
         &self,
         stu_id: &str,
         school_year: SchoolYear,
@@ -71,7 +71,7 @@ where
     async fn get_course_info(&self, code: &str) -> Result<CourseInfo, Self::Err> {
         Ok(RawJWService::get_course_info(self, code).await?.into_body())
     }
-    async fn get_course(
+    async fn get_courses(
         &self,
         stu_id: &str,
         school_year: SchoolYear,
