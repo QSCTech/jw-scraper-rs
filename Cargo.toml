@@ -5,7 +5,7 @@ authors = ["Hexilee <hexileee@gmail.com>"]
 edition = "2018"
 license = "MIT"
 description = "浙江大学教务网爬虫库"
-repository = "https://github.com/QSCTech/jw-scraper"
+repository = "https://github.com/QSCTech/jw-scraper-rs"
 keywords = ["zju", "jw", "scraper"]
 categories = ["api-bindings"]
 readme = "README.md"
@@ -23,7 +23,7 @@ tokio = { version = "0.2.0-alpha.1", optional = true }
 encoding = { version = "0.2", optional = true }
 
 [badges]
-travis-ci = { repository = "QSCTech/jw-scraper", branch = "master" }
+travis-ci = { repository = "QSCTech/jw-scraper-rs", branch = "master" }
 
 [features]
 test = ["interfacer-http-hyper", "config", "tokio", "encoding"]
