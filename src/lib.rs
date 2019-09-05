@@ -3,7 +3,7 @@
 pub mod helper;
 
 #[cfg(feature = "client")]
-pub use client::{client, Client, Helper};
+pub use client::{client, Body, Client, Helper, HyperClient};
 
 #[doc(inline)]
 pub use raw::resp::{

@@ -22,9 +22,14 @@ interfacer-http-hyper = { version = "0.1", optional = true }
 config = "0.9"
 tokio = "0.2.0-alpha.1"
 encoding = "0.2"
+hyper-tls = "0.4.0-alpha.1"
 
 [badges]
 travis-ci = { repository = "QSCTech/jw-scraper-rs", branch = "master" }
 
 [features]
 client = ["interfacer-http-hyper"]
+
+[[example]]
+name = "https"
+required-features = ["client"]
