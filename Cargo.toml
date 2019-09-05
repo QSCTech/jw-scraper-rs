@@ -15,10 +15,9 @@ documentation = "https://docs.rs/zju-jw-scraper"
 unhtml = { version = "0.7", features = ["derive"] }
 serde = { version = "1.0", features = ["derive"] }
 reformation = "0.4"
-interfacer-http = { git = "https://github.com/Hexilee/interfacer-http", features = ["encoding", "serde-base", "serde-urlencoded", "unhtml-html"] }
-
+interfacer-http = { version = "0.2", features = ["encoding", "serde-base", "serde-urlencoded", "unhtml-html"]}
+interfacer-http-hyper = { version = "0.1", optional = true }
 # dependencies for test
-interfacer-http-hyper = { git = "https://github.com/Hexilee/interfacer-http", optional = true }
 config = { version = "0.9", optional = true }
 tokio = { version = "0.2.0-alpha.1", optional = true }
 encoding = { version = "0.2", optional = true }

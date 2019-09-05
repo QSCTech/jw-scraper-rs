@@ -1,6 +1,5 @@
 use crate::raw::req::{
-    CoursesReq, ExamsReq, LoginBody, ScoresReq, DEFAULT_COURSES_VIEW_STATE,
-    DEFAULT_EXAMS_VIEW_STATE, LOGIN_VIEW_STATE, SCORES_BASE_VIEW_STATE,
+    CoursesReq, ExamsReq, LoginBody, ScoresReq, LOGIN_VIEW_STATE, SCORES_BASE_VIEW_STATE,
 };
 use crate::raw::{RawJWService, JWB_COOKIE_NAME};
 use crate::{
@@ -80,10 +79,15 @@ where
         cookie: &str,
     ) -> Result<Vec<Course>, Self::Err> {
         let school_year_str = school_year.to_string();
+        let view_state = RawJWService::get_default_courses(self, stu_id, cookie)
+            .await?
+            .into_body()
+            .hidden_form
+            .view_state;
         Ok(RawJWService::get_courses(
             self,
             stu_id,
-            CoursesReq::new(DEFAULT_COURSES_VIEW_STATE, &school_year_str, &semester),
+            CoursesReq::new(&view_state, &school_year_str, &semester),
             cookie,
         )
         .await?
@@ -98,10 +102,15 @@ where
         cookie: &str,
     ) -> Result<Vec<Exam>, Self::Err> {
         let school_year_str = school_year.to_string();
+        let view_state = RawJWService::get_default_exams(self, stu_id, cookie)
+            .await?
+            .into_body()
+            .hidden_form
+            .view_state;
         Ok(RawJWService::get_exams(
             self,
             stu_id,
-            ExamsReq::new(DEFAULT_EXAMS_VIEW_STATE, &school_year_str, &semester),
+            ExamsReq::new(&view_state, &school_year_str, &semester),
             cookie,
         )
         .await?

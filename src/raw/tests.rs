@@ -1,6 +1,5 @@
 use super::req::{
-    CoursesReq, ExamsReq, LoginBody, ScoresReq, DEFAULT_COURSES_VIEW_STATE,
-    DEFAULT_EXAMS_VIEW_STATE, LOGIN_VIEW_STATE, SCORES_BASE_VIEW_STATE,
+    CoursesReq, ExamsReq, LoginBody, ScoresReq, LOGIN_VIEW_STATE, SCORES_BASE_VIEW_STATE,
 };
 use super::resp::{CourseInfo, HiddenForm};
 use super::{RawJWService, JWB_COOKIE_NAME};
@@ -112,7 +111,7 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
     let courses = RawJWService::get_default_courses(&service, &config.stu_id, &cookie_str)
         .await?
         .into_body();
-    assert_eq!(DEFAULT_COURSES_VIEW_STATE, &courses.hidden_form.view_state);
+    assert!(!courses.hidden_form.view_state.is_empty());
     assert!(courses.courses.len() > 0);
     Ok(())
 }
@@ -136,10 +135,15 @@ async fn test_courses() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
+    let view_state = RawJWService::get_default_courses(&service, &config.stu_id, &cookie_str)
+        .await?
+        .into_body()
+        .hidden_form
+        .view_state;
     let courses = RawJWService::get_courses(
         &service,
         &config.stu_id,
-        CoursesReq::new(DEFAULT_COURSES_VIEW_STATE, "2018-2019", "1|秋、冬"),
+        CoursesReq::new(&view_state, "2018-2019", "1|秋、冬"),
         &cookie_str,
     )
     .await?
@@ -170,7 +174,7 @@ async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
     let exams = RawJWService::get_default_exams(&service, &config.stu_id, &cookie_str)
         .await?
         .into_body();
-    assert_eq!(DEFAULT_EXAMS_VIEW_STATE, &exams.hidden_form.view_state);
+    assert!(!exams.hidden_form.view_state.is_empty());
     assert!(exams.exams.len() > 0);
     Ok(())
 }
@@ -194,10 +198,15 @@ async fn test_exams() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(1, cookie.unwrap().len());
     let (name, value) = cookie.unwrap()[0].name_value();
     let cookie_str = Cookie::new(name.to_owned(), value.to_owned()).to_string();
+    let view_state = RawJWService::get_default_exams(&service, &config.stu_id, &cookie_str)
+        .await?
+        .into_body()
+        .hidden_form
+        .view_state;
     let exams = RawJWService::get_exams(
         &service,
         &config.stu_id,
-        ExamsReq::new(DEFAULT_EXAMS_VIEW_STATE, "2018-2019", "1|冬"),
+        ExamsReq::new(&view_state, "2018-2019", "1|冬"),
         &cookie_str,
     )
     .await?
