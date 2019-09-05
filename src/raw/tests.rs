@@ -3,7 +3,7 @@ use super::req::{
 };
 use super::resp::{CourseInfo, HiddenForm};
 use super::{RawJWService, JWB_COOKIE_NAME};
-use crate::{client, tests::Config};
+use crate::{client::client, tests::Config};
 use interfacer_http::{cookie::Cookie, ResponseExt};
 
 #[tokio::test]

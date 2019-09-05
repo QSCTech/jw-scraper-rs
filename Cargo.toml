@@ -23,6 +23,7 @@ config = "0.9"
 tokio = "0.2.0-alpha.1"
 encoding = "0.2"
 hyper-tls = "0.4.0-alpha.1"
+interfacer-http-hyper = "0.1"
 
 [badges]
 travis-ci = { repository = "QSCTech/jw-scraper-rs", branch = "master" }
@@ -31,5 +32,5 @@ travis-ci = { repository = "QSCTech/jw-scraper-rs", branch = "master" }
 client = ["interfacer-http-hyper"]
 
 [[example]]
-name = "https"
+name = "connector"
 required-features = ["client"]

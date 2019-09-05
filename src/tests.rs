@@ -7,7 +7,6 @@ pub struct Config {
     pub stu_id: String,
     pub password: String,
     pub jwb_base_url: String,
-    pub https_jwb_base_url: String,
 }
 
 impl Config {

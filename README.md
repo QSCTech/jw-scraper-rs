@@ -1,4 +1,4 @@
-### 浙江大学教务网爬虫库（待补充）
+### ZJU-JWB scraper 
 
 [![Build status](https://img.shields.io/travis/QSCTech/jw-scraper-rs/master.svg)](https://travis-ci.org/QSCTech/jw-scraper-rs)
 [![Coverage Status](https://coveralls.io/repos/github/QSCTech/jw-scraper-rs/badge.svg?branch=master)](https://coveralls.io/github/QSCTech/jw-scraper-rs?branch=master)
