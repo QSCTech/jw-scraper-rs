@@ -1,7 +1,9 @@
+#![allow(unused_attributes)]
+
 pub mod req;
 pub mod resp;
 
-#[cfg(all(test, feature = "test"))]
+#[cfg(test)]
 pub mod tests;
 
 use interfacer_http::{http::header::COOKIE, http::Response, http_service};

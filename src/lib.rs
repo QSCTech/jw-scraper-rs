@@ -1,9 +1,8 @@
 #![feature(custom_attribute, param_attrs, async_closure)]
-#![allow(unused_attributes)]
 
 pub mod helper;
 
-#[cfg(any(feature = "client", feature = "test"))]
+#[cfg(feature = "client")]
 pub use client::{client, Client, Helper};
 
 #[doc(inline)]
@@ -21,8 +20,8 @@ mod raw;
 mod req;
 mod service;
 
-#[cfg(any(feature = "client", feature = "test"))]
+#[cfg(feature = "client")]
 mod client;
 
-#[cfg(all(test, feature = "test"))]
+#[cfg(all(test, feature = "client"))]
 mod tests;

@@ -17,14 +17,14 @@ serde = { version = "1.0", features = ["derive"] }
 reformation = "0.4"
 interfacer-http = { version = "0.2", features = ["encoding", "serde-base", "serde-urlencoded", "unhtml-html"]}
 interfacer-http-hyper = { version = "0.1", optional = true }
-# dependencies for test
-config = { version = "0.9", optional = true }
-tokio = { version = "0.2.0-alpha.1", optional = true }
-encoding = { version = "0.2", optional = true }
+
+[dev-dependencies]
+config = "0.9"
+tokio = "0.2.0-alpha.1"
+encoding = "0.2"
 
 [badges]
 travis-ci = { repository = "QSCTech/jw-scraper-rs", branch = "master" }
 
 [features]
-test = ["interfacer-http-hyper", "config", "tokio", "encoding"]
 client = ["interfacer-http-hyper"]
