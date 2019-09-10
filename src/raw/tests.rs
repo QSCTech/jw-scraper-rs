@@ -93,7 +93,6 @@ async fn test_default_courses() -> Result<(), Box<dyn std::error::Error>> {
         .await?
         .into_body();
     assert!(!courses.hidden_form.view_state.is_empty());
-    assert!(courses.courses.len() > 0);
     Ok(())
 }
 
@@ -156,7 +155,6 @@ async fn test_default_exams() -> Result<(), Box<dyn std::error::Error>> {
         .await?
         .into_body();
     assert!(!exams.hidden_form.view_state.is_empty());
-    assert!(exams.exams.len() > 0);
     Ok(())
 }
 
