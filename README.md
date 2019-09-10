@@ -40,15 +40,6 @@ pub trait JWService {
 
 The `JWService` is implemented for all types which implements [`interfacer_http::HttpClient`](https://docs.rs/interfacer-http/0.2/interfacer_http/trait.HttpClient.html).
 
-```rust,ignore
-#[async_trait]
-pub trait HttpClient: Sync {
-    type Err: Error;
-    async fn request(&self, req: Request<Vec<u8>>) -> Result<Response<Vec<u8>>, Self::Err>;
-    fn helper(&self) -> &Helper;
-}
-```
-
 You can refer to `src/test.rs` for all use cases.
 
 #### client
