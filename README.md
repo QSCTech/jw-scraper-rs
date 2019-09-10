@@ -8,7 +8,7 @@
 
 #### service
 
-```rust
+```rust,ignore
 #[async_trait]
 pub trait JWService {
     type Err;
@@ -40,7 +40,7 @@ pub trait JWService {
 
 The `JWService` is implemented for all types which implements [`interfacer_http::HttpClient`](https://docs.rs/interfacer-http/0.2/interfacer_http/trait.HttpClient.html).
 
-```rust
+```rust,ignore
 #[async_trait]
 pub trait HttpClient: Sync {
     type Err: Error;
@@ -61,7 +61,7 @@ zju-jw-scraper = { version = "0.2", features = ["client"] }
 
 Then, you can use default client provided by `interfacer-http-hyper`:
 
-```rust
+```rust,no_run
 use zju_jw_scraper::{client::client, JWService};
 
 #[tokio::test]
@@ -77,7 +77,7 @@ However, the default client can only handle requests on HTTP, if you want to use
 
 As the example `connector`:
 
-```rust
+```rust,no_run
 use hyper_tls::HttpsConnector;
 use zju_jw_scraper::{client::client_on, JWService};
 
@@ -95,7 +95,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Run basic tests:
 
-```rust
+```bash
 cargo test
 ```
 
