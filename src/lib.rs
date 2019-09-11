@@ -106,6 +106,7 @@
 
 #![feature(custom_attribute, param_attrs, async_closure)]
 
+#[doc(inline)]
 pub mod helper;
 
 #[cfg(feature = "client")]

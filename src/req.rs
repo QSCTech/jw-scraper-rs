@@ -1,15 +1,34 @@
 use std::fmt::{Display, Error, Formatter};
 use std::ops::Deref;
 
+/// SchoolYear(2017) for "2017-2018"
+///
+/// use `into` to construct `SchoolYear`
+/// ```rust
+/// use zju_jw_scraper::SchoolYear;
+/// let school_year: SchoolYear = 2017.into();
+/// assert_eq!("2017-2018", &school_year.to_string())
+/// ```
 #[derive(Debug, Ord, PartialOrd, Eq, PartialEq)]
 pub struct SchoolYear(u16);
 
+/// semester options for querying courses.
+/// - FallAndWinter for "秋冬"
+/// - SpringAndSummer for "春夏"
 #[derive(Debug)]
 pub enum CourseSemester {
     FallAndWinter,
     SpringAndSummer,
 }
 
+/// semester options for querying exams.
+/// - SummerHoliday for "暑"
+/// - Fall for "秋"
+/// - Winter for "冬"
+/// - WinterShort for "冬短"
+/// - Spring for "春"
+/// - Summer for "夏"
+/// - SummerShort for "夏短"
 #[derive(Debug)]
 pub enum ExamSemester {
     SummerHoliday,
