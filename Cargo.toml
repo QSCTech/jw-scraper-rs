@@ -34,3 +34,6 @@ client = ["interfacer-http-hyper"]
 [[example]]
 name = "connector"
 required-features = ["client"]
+
+[package.metadata.docs.rs]
+all-features = true
