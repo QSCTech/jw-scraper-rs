@@ -13,6 +13,7 @@ use resp::{
     TotalCreditPage,
 };
 
+/// JWB cookie key.
 pub const JWB_COOKIE_NAME: &str = "ASP.NET_SessionId";
 
 #[rustfmt::skip]
